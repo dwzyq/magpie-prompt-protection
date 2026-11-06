@@ -5,19 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>提示保护 · Magpie</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=0.1.5">
+  <link rel="stylesheet" href="style.css?v=0.1.6">
   <script src="_magpie/bridge.js" defer></script>
-  <script src="app.js?v=0.1.5" defer></script>
+  <script src="app.js?v=0.1.6" defer></script>
 </head>
 <body>
   <main class="shell">
     <header class="page-head">
       <div class="head-copy">
         <div class="eyebrow" data-i18n="app.eyebrow">MAGPIE · 网关中间件</div>
-        <div class="title-row">
-          <h1 data-i18n="app.title">提示保护</h1>
-          <span class="app-version" title="Plugin version">v0.1.5</span>
-        </div>
+        <h1 data-i18n="app.title">提示保护</h1>
         <p data-i18n="app.subtitle">在请求发往模型之前，用正则规则对提示内容进行脱敏或拒绝。</p>
       </div>
       <div class="head-actions">
@@ -102,8 +99,8 @@
           <label class="page-size-label">
             <span data-i18n="page.size">每页</span>
             <select id="page-size" class="select select-mini">
-              <option value="10" selected>10</option>
-              <option value="20">20</option>
+              <option value="10">10</option>
+              <option value="20" selected>20</option>
               <option value="50">50</option>
               <option value="100">100</option>
             </select>
@@ -114,17 +111,6 @@
         </div>
       </footer>
     </section>
-
-    <details class="panel advanced-panel">
-      <summary data-i18n="advanced.title">高级设置</summary>
-      <div class="advanced-body">
-        <label class="field">
-          <span class="field-label" data-i18n="advanced.rejectMessage">拒绝时的错误信息</span>
-          <input id="reject-message" maxlength="300" autocomplete="off">
-          <small data-i18n="advanced.rejectMessageHelp">命中拒绝规则时返回给 Agent 的错误文本。</small>
-        </label>
-      </div>
-    </details>
 
     <p class="footnote" data-i18n="app.footnote">规则仅在 Magpie 网关内本地执行；页面不读取、不存储任何对话内容。</p>
   </main>
@@ -155,7 +141,7 @@
 
         <label class="field">
           <span class="field-label" data-i18n="field.pattern">正则表达式</span>
-          <textarea id="field-pattern" rows="3" spellcheck="false" class="mono" required></textarea>
+          <textarea id="field-pattern" rows="4" spellcheck="false" class="mono" required></textarea>
           <small class="field-error" id="error-pattern" hidden></small>
         </label>
 
@@ -197,7 +183,7 @@
           </div>
           <label class="field">
             <span class="field-label" data-i18n="test.input">测试文本</span>
-            <textarea id="field-test" rows="2" spellcheck="false" data-i18n-placeholder="test.placeholder" placeholder="输入一段文本，实时查看正则匹配效果"></textarea>
+            <textarea id="field-test" rows="3" spellcheck="false" data-i18n-placeholder="test.placeholder" placeholder="输入一段文本，实时查看正则匹配效果"></textarea>
           </label>
           <div id="preview-result" class="preview-result" data-state="idle">
             <span data-i18n="test.idle">输入测试文本后显示预览</span>

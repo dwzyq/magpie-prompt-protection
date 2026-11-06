@@ -1054,11 +1054,6 @@
       askDelete(selectedIds());
     });
 
-    $("reject-message").addEventListener("input", function (event) {
-      state.rejectMessage = event.target.value;
-      scheduleSave();
-    });
-
     $("rule-close").addEventListener("click", closeRuleModal);
     $("rule-cancel").addEventListener("click", closeRuleModal);
     $("rule-submit").addEventListener("click", function () {
@@ -1162,7 +1157,8 @@
         typeof state.options.rejectMessage === "string" && state.options.rejectMessage.trim()
           ? state.options.rejectMessage
           : DEFAULT_REJECT_MESSAGE;
-      $("reject-message").value = state.rejectMessage;
+      const rejectInput = $("reject-message");
+      if (rejectInput) rejectInput.value = state.rejectMessage;
       renderAll();
     }
     setSaveState(state.optionsReady ? "saved" : "error");
