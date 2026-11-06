@@ -9,42 +9,39 @@
     pattern: "",
     action: "mask",
     replacement: "[MASKED]",
-    flags: "",
     scopes: ["user"],
   };
 
   const TEXT = {
     zh: {
-      "app.eyebrow": "MAGPIE · 网关中间件",
-      "app.title": "提示保护",
-      "app.subtitle": "在请求发往模型之前，用正则规则对提示内容进行脱敏或拒绝。",
+      "app.title": "提示保护规则",
+      "app.subtitle": "管理基于正则的提示保护规则，可对命中内容做脱敏或直接拒绝。",
       "app.create": "创建规则",
       "app.loading": "正在加载…",
       "app.saved": "已保存",
       "app.saving": "保存中…",
       "app.unsaved": "未保存",
       "app.saveError": "保存失败",
-      "stats.total": "规则总数",
-      "stats.enabled": "已启用",
-      "stats.reject": "拒绝规则",
-      "stats.disabled": "已禁用",
-      "search.placeholder": "按名称筛选…",
-      "filter.all": "全部状态",
-      "filter.enabled": "已启用",
-      "filter.disabled": "已禁用",
-      "bulk.enable": "批量启用",
-      "bulk.disable": "批量禁用",
-      "bulk.delete": "批量删除",
-      "selection.count": "已选 {count} 条",
+      "search.placeholder": "按名称筛选...",
+      "bulk.clear": "取消选择",
+      "bulk.enable": "启用",
+      "bulk.disable": "禁用",
+      "bulk.delete": "删除",
+      "selection.count": "已选择 {count} 项",
       "table.name": "名称",
-      "table.pattern": "正则表达式",
+      "table.description": "描述",
+      "table.pattern": "匹配规则",
       "table.action": "处理方式",
       "table.scopes": "作用范围",
       "table.status": "状态",
-      "table.updated": "更新时间",
+      "table.created": "创建时间",
       "table.actions": "操作",
+      "table.empty": "暂无数据",
+      "table.selectAll": "全选",
+      "table.selectRow": "选择行",
       "row.edit": "编辑",
       "row.delete": "删除",
+      "menu.open": "打开菜单",
       "action.mask": "脱敏",
       "action.reject": "拒绝",
       "scope.system": "系统",
@@ -52,87 +49,83 @@
       "scope.user": "用户",
       "scope.assistant": "助手",
       "scope.tool": "工具",
-      "scope.all": "全部",
-      "empty.title": "还没有提示保护规则",
-      "empty.hint": "创建第一条规则，命中的内容会被脱敏或拒绝。",
-      "page.size": "每页",
+      "page.size": "每页行数",
       "page.prev": "上一页",
       "page.next": "下一页",
-      "page.total": "共 {count} 条",
-      "page.info": "第 {page} / {pages} 页",
-      "advanced.title": "高级设置",
-      "advanced.rejectMessage": "拒绝时的错误信息",
-      "advanced.rejectMessageHelp": "命中拒绝规则时返回给 Agent 的错误文本。",
-      "dialog.subtitle": "配置正则、处理方式与作用范围。",
+      "pagination.selected": "已选择 {selected} / {count} 行 / 总计 {total} 行",
       "dialog.createTitle": "创建提示保护规则",
       "dialog.editTitle": "编辑提示保护规则",
+      "dialog.createDescription": "配置正则匹配规则，并选择命中后脱敏还是直接拒绝。",
+      "dialog.editDescription": "更新匹配规则、处理方式和作用范围。",
       "dialog.cancel": "取消",
       "dialog.createAction": "创建",
       "dialog.saveAction": "保存",
+      "dialog.confirm": "确认",
       "field.name": "名称",
       "field.description": "描述",
       "field.pattern": "正则表达式",
       "field.action": "处理方式",
       "field.replacement": "替换文本",
-      "field.flags": "正则标志（可选）",
-      "field.flagsPlaceholder": "例如 i、m、s",
       "field.scopes": "作用范围",
-      "field.scopesHelp": "不选择任何范围时，规则对所有消息角色生效。",
       "test.title": "测试预览",
-      "test.hint": "在本地实时匹配，不会发送测试文本。",
       "test.input": "测试文本",
-      "test.placeholder": "输入一段文本，实时查看正则匹配效果",
-      "test.idle": "输入测试文本后显示预览",
+      "test.result": "预览结果",
+      "test.placeholder": "输入测试文本以预览正则替换效果",
       "test.noMatch": "无匹配",
-      "test.rejectMatch": "命中：该请求将被拒绝",
       "test.invalid": "无效的正则表达式：",
-      "test.maskResult": "脱敏结果",
-      "validation.nameRequired": "请输入规则名称",
+      "validation.nameRequired": "请输入名称",
       "validation.patternRequired": "请输入正则表达式",
-      "validation.patternInvalid": "正则表达式无效：",
-      "validation.replacementRequired": "脱敏操作必须填写替换文本",
+      "validation.patternInvalid": "无效的正则表达式：",
+      "validation.replacementRequired": "请输入替换文本",
       "validation.duplicateName": "规则名称已存在",
+      "statusChange.title": "更新规则状态",
+      "statusChange.enableDescription": "确定启用规则“{name}”吗？",
+      "statusChange.disableDescription": "确定禁用规则“{name}”吗？",
       "delete.title": "删除提示保护规则",
-      "delete.bulkTitle": "删除所选规则",
       "delete.description": "确定删除规则“{name}”吗？此操作不可撤销。",
-      "delete.bulkDescription": "确定删除 {count} 条规则吗？此操作不可撤销。",
-      "delete.confirm": "删除",
-      "status.enable": "启用规则",
-      "status.disable": "禁用规则",
-      "toast.deleted": "规则已删除",
-      "toast.bulkDeleted": "所选规则已删除",
+      "bulkEnable.title": "启用所选规则",
+      "bulkEnable.description": "确定启用 {count} 条已选规则吗？",
+      "bulkDisable.title": "禁用所选规则",
+      "bulkDisable.description": "确定禁用 {count} 条已选规则吗？",
+      "bulkDelete.title": "删除所选规则",
+      "bulkDelete.description": "确定删除 {count} 条已选规则吗？此操作不可撤销。",
+      "messages.createSuccess": "提示保护规则已创建",
+      "messages.updateSuccess": "提示保护规则已更新",
+      "messages.deleteSuccess": "提示保护规则已删除",
+      "messages.statusUpdateSuccess": "规则状态已更新",
+      "messages.bulkEnableSuccess": "已启用所选规则",
+      "messages.bulkDisableSuccess": "已禁用所选规则",
+      "messages.bulkDeleteSuccess": "已删除所选规则",
     },
     en: {
-      "app.eyebrow": "MAGPIE · GATEWAY MIDDLEWARE",
-      "app.title": "Prompt Protection",
-      "app.subtitle": "Mask or reject prompt content with regex rules before requests reach a model.",
-      "app.create": "Create rule",
+      "app.title": "Prompt Protection Rules",
+      "app.subtitle": "Manage regex-based prompt protection rules for masking or rejecting matched content.",
+      "app.create": "Create Rule",
       "app.loading": "Loading…",
       "app.saved": "Saved",
       "app.saving": "Saving…",
       "app.unsaved": "Unsaved",
       "app.saveError": "Save failed",
-      "stats.total": "Total rules",
-      "stats.enabled": "Enabled",
-      "stats.reject": "Reject rules",
-      "stats.disabled": "Disabled",
-      "search.placeholder": "Filter by name…",
-      "filter.all": "All statuses",
-      "filter.enabled": "Enabled",
-      "filter.disabled": "Disabled",
+      "search.placeholder": "Filter by name...",
+      "bulk.clear": "Clear selection",
       "bulk.enable": "Enable",
       "bulk.disable": "Disable",
       "bulk.delete": "Delete",
       "selection.count": "{count} selected",
       "table.name": "Name",
+      "table.description": "Description",
       "table.pattern": "Pattern",
       "table.action": "Action",
       "table.scopes": "Scopes",
       "table.status": "Status",
-      "table.updated": "Updated",
+      "table.created": "Created At",
       "table.actions": "Actions",
+      "table.empty": "No data",
+      "table.selectAll": "Select all",
+      "table.selectRow": "Select row",
       "row.edit": "Edit",
       "row.delete": "Delete",
+      "menu.open": "Open menu",
       "action.mask": "Mask",
       "action.reject": "Reject",
       "scope.system": "System",
@@ -140,55 +133,53 @@
       "scope.user": "User",
       "scope.assistant": "Assistant",
       "scope.tool": "Tool",
-      "scope.all": "All",
-      "empty.title": "No prompt protection rules yet",
-      "empty.hint": "Create your first rule to mask or reject matching content.",
-      "page.size": "Per page",
-      "page.prev": "Previous",
-      "page.next": "Next",
-      "page.total": "{count} rules",
-      "page.info": "Page {page} of {pages}",
-      "advanced.title": "Advanced",
-      "advanced.rejectMessage": "Reject message",
-      "advanced.rejectMessageHelp": "Error text returned to the agent when a reject rule matches.",
-      "dialog.subtitle": "Configure the pattern, action and scopes.",
+      "page.size": "Rows per page",
+      "page.prev": "Previous page",
+      "page.next": "Next page",
+      "pagination.selected": "{selected} of {count} row(s) selected / {total} total",
       "dialog.createTitle": "Create prompt protection rule",
       "dialog.editTitle": "Edit prompt protection rule",
+      "dialog.createDescription": "Define a regex rule and choose whether matches are masked or rejected.",
+      "dialog.editDescription": "Update the matching pattern, action, and scope settings.",
       "dialog.cancel": "Cancel",
       "dialog.createAction": "Create",
       "dialog.saveAction": "Save",
+      "dialog.confirm": "Confirm",
       "field.name": "Name",
       "field.description": "Description",
       "field.pattern": "Pattern",
       "field.action": "Action",
       "field.replacement": "Replacement",
-      "field.flags": "Regex flags (optional)",
-      "field.flagsPlaceholder": "e.g. i, m, s",
       "field.scopes": "Scopes",
-      "field.scopesHelp": "With no scope selected, the rule applies to every message role.",
-      "test.title": "Test preview",
-      "test.hint": "Matched locally; test text is never sent.",
-      "test.input": "Test text",
-      "test.placeholder": "Type text to preview the regex result",
-      "test.idle": "Enter test text to see a preview",
+      "test.title": "Test Preview",
+      "test.input": "Test Input",
+      "test.result": "Preview Result",
+      "test.placeholder": "Enter test text to preview regex replacement",
       "test.noMatch": "No match",
-      "test.rejectMatch": "Match: this request would be rejected",
-      "test.invalid": "Invalid regular expression: ",
-      "test.maskResult": "Masked result",
+      "test.invalid": "Invalid regex pattern: ",
       "validation.nameRequired": "Name is required",
       "validation.patternRequired": "Pattern is required",
-      "validation.patternInvalid": "Invalid pattern: ",
-      "validation.replacementRequired": "Replacement is required for mask",
+      "validation.patternInvalid": "Invalid regex pattern: ",
+      "validation.replacementRequired": "Replacement is required",
       "validation.duplicateName": "Rule name already exists",
+      "statusChange.title": "Update rule status",
+      "statusChange.enableDescription": "Enable rule “{name}”?",
+      "statusChange.disableDescription": "Disable rule “{name}”?",
       "delete.title": "Delete prompt protection rule",
-      "delete.bulkTitle": "Delete selected rules",
-      "delete.description": "Delete “{name}”? This cannot be undone.",
-      "delete.bulkDescription": "Delete {count} rules? This cannot be undone.",
-      "delete.confirm": "Delete",
-      "status.enable": "Enable rule",
-      "status.disable": "Disable rule",
-      "toast.deleted": "Rule deleted",
-      "toast.bulkDeleted": "Selected rules deleted",
+      "delete.description": "Delete rule “{name}”? This cannot be undone.",
+      "bulkEnable.title": "Enable selected rules",
+      "bulkEnable.description": "Enable {count} selected rules?",
+      "bulkDisable.title": "Disable selected rules",
+      "bulkDisable.description": "Disable {count} selected rules?",
+      "bulkDelete.title": "Delete selected rules",
+      "bulkDelete.description": "Delete {count} selected rules? This cannot be undone.",
+      "messages.createSuccess": "Prompt protection rule created",
+      "messages.updateSuccess": "Prompt protection rule updated",
+      "messages.deleteSuccess": "Prompt protection rule deleted",
+      "messages.statusUpdateSuccess": "Rule status updated",
+      "messages.bulkEnableSuccess": "Selected rules enabled",
+      "messages.bulkDisableSuccess": "Selected rules disabled",
+      "messages.bulkDeleteSuccess": "Selected rules deleted",
     },
   };
 
@@ -198,15 +189,17 @@
     rules: [],
     rejectMessage: DEFAULT_REJECT_MESSAGE,
     search: "",
-    statusFilter: "all",
-    sortField: "updatedAt",
+    sortField: "createdAt",
     sortDesc: true,
     page: 1,
-    pageSize: 10,
+    pageSize: 20,
+    pageRuleCount: 0,
     selected: {},
     visibleIds: [],
     editingId: null,
-    pendingDelete: null,
+    editingFlags: "",
+    pendingConfirm: null,
+    pendingToast: null,
     saveTimer: null,
     lastSaveAt: 0,
     saveInFlight: false,
@@ -216,6 +209,7 @@
 
   let bridge = null;
   let previewTimer = null;
+  let toastTimer = null;
 
   function $(id) {
     return document.getElementById(id);
@@ -251,9 +245,13 @@
     document.querySelectorAll("[data-i18n-placeholder]").forEach(function (node) {
       node.setAttribute("placeholder", t(node.getAttribute("data-i18n-placeholder")));
     });
+    document.querySelectorAll("[data-i18n-title]").forEach(function (node) {
+      const text = t(node.getAttribute("data-i18n-title"));
+      node.title = text;
+      node.setAttribute("aria-label", text);
+    });
     document.title = t("app.title") + " · Magpie";
     updateModalTexts();
-    paintSaveState();
   }
 
   function applyTheme(theme) {
@@ -264,8 +262,10 @@
   function updateModalTexts() {
     const isEdit = Boolean(state.editingId);
     const title = $("rule-modal-title");
+    const subtitle = $("rule-modal-subtitle");
     const submit = $("rule-submit");
     if (title) title.textContent = t(isEdit ? "dialog.editTitle" : "dialog.createTitle");
+    if (subtitle) subtitle.textContent = t(isEdit ? "dialog.editDescription" : "dialog.createDescription");
     if (submit) submit.textContent = t(isEdit ? "dialog.saveAction" : "dialog.createAction");
   }
 
@@ -278,6 +278,29 @@
         th.removeAttribute("data-sorted");
       }
     });
+  }
+
+  function loadSortPreference() {
+    try {
+      const stored = JSON.parse(window.localStorage.getItem("magpie-prompt-protection-sorting") || "null");
+      if (stored && (stored.field === "name" || stored.field === "createdAt")) {
+        state.sortField = stored.field;
+        state.sortDesc = Boolean(stored.desc);
+      }
+    } catch (error) {
+      // Storage can be unavailable in the plugin sandbox.
+    }
+  }
+
+  function saveSortPreference() {
+    try {
+      window.localStorage.setItem(
+        "magpie-prompt-protection-sorting",
+        JSON.stringify({ field: state.sortField, desc: state.sortDesc })
+      );
+    } catch (error) {
+      // Storage can be unavailable in the plugin sandbox.
+    }
   }
 
   function genId() {
@@ -367,10 +390,7 @@
   function filteredRules() {
     const search = state.search.trim().toLowerCase();
     return state.rules.filter(function (rule) {
-      if (state.statusFilter === "enabled" && rule.status !== "enabled") return false;
-      if (state.statusFilter === "disabled" && rule.status === "enabled") return false;
-      if (search && rule.name.toLowerCase().indexOf(search) < 0) return false;
-      return true;
+      return !search || rule.name.toLowerCase().indexOf(search) >= 0;
     });
   }
 
@@ -380,181 +400,26 @@
       if (state.sortField === "name") {
         result = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
       } else {
-        result = String(a.updatedAt).localeCompare(String(b.updatedAt));
+        result = String(a.createdAt).localeCompare(String(b.createdAt));
       }
       return state.sortDesc ? -result : result;
     });
   }
 
+  function pad(number) {
+    return String(number).padStart(2, "0");
+  }
+
   function formatDate(value) {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return "-";
-    const pad = function (number) {
-      return String(number).padStart(2, "0");
-    };
-    return (
-      date.getFullYear() +
-      "-" +
-      pad(date.getMonth() + 1) +
-      "-" +
-      pad(date.getDate()) +
-      " " +
-      pad(date.getHours()) +
-      ":" +
-      pad(date.getMinutes())
-    );
+    return date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate());
   }
 
-  function renderAll() {
-    pruneSelection();
-    renderStats();
-    renderTable();
-    renderBulk();
-    updateSortMarks();
-  }
-
-  function renderStats() {
-    const total = state.rules.length;
-    const enabled = state.rules.filter(function (rule) {
-      return rule.status === "enabled";
-    }).length;
-    const reject = state.rules.filter(function (rule) {
-      return rule.settings.action === "reject";
-    }).length;
-    $("stat-total").textContent = String(total);
-    $("stat-enabled").textContent = String(enabled);
-    $("stat-reject").textContent = String(reject);
-    $("stat-disabled").textContent = String(total - enabled);
-  }
-
-  function renderTable() {
-    const rules = sortedRules(filteredRules());
-    const pages = Math.max(1, Math.ceil(rules.length / state.pageSize));
-    if (state.page > pages) state.page = pages;
-    if (state.page < 1) state.page = 1;
-
-    const start = (state.page - 1) * state.pageSize;
-    const pageRules = rules.slice(start, start + state.pageSize);
-    state.visibleIds = pageRules.map(function (rule) {
-      return rule.id;
-    });
-
-    const table = document.querySelector(".rules-table");
-    const tbody = $("rules-body");
-    tbody.replaceChildren();
-    table.hidden = pageRules.length === 0;
-    $("empty-state").hidden = pageRules.length !== 0;
-
-    pageRules.forEach(function (rule) {
-      tbody.appendChild(renderRow(rule));
-    });
-
-    updateSelectAllState();
-    renderPagination(rules.length, pages);
-  }
-
-  function renderRow(rule) {
-    const row = el("tr");
-
-    const selectCell = el("td", "col-select");
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = Boolean(state.selected[rule.id]);
-    checkbox.setAttribute("aria-label", rule.name || t("field.name"));
-    checkbox.addEventListener("change", function () {
-      if (checkbox.checked) state.selected[rule.id] = true;
-      else delete state.selected[rule.id];
-      renderBulk();
-      updateSelectAllState();
-    });
-    selectCell.appendChild(checkbox);
-    row.appendChild(selectCell);
-
-    const nameCell = el("td");
-    const nameBox = el("div", "rule-name");
-    nameBox.appendChild(el("strong", null, rule.name || "(unnamed)"));
-    nameBox.appendChild(el("small", null, rule.description || "—"));
-    nameCell.appendChild(nameBox);
-    row.appendChild(nameCell);
-
-    const patternCell = el("td");
-    const code = el("code", "pattern-code", rule.pattern + (rule.settings.flags ? "  [" + rule.settings.flags + "]" : ""));
-    code.title = rule.pattern;
-    patternCell.appendChild(code);
-    row.appendChild(patternCell);
-
-    const actionCell = el("td");
-    actionCell.appendChild(
-      el("span", "badge " + (rule.settings.action === "reject" ? "badge-reject" : "badge-mask"), t("action." + rule.settings.action))
-    );
-    row.appendChild(actionCell);
-
-    const scopesCell = el("td");
-    const scopeList = el("div", "scope-list");
-    if (!rule.settings.scopes || rule.settings.scopes.length === 0) {
-      scopeList.appendChild(el("span", "scope-pill", t("scope.all")));
-    } else {
-      rule.settings.scopes.forEach(function (scope) {
-        scopeList.appendChild(el("span", "scope-pill", t("scope." + scope)));
-      });
-    }
-    scopesCell.appendChild(scopeList);
-    row.appendChild(scopesCell);
-
-    const statusCell = el("td");
-    const statusBox = el("div", "status-cell");
-    const switchButton = el("button", "switch");
-    switchButton.type = "button";
-    switchButton.setAttribute("role", "switch");
-    switchButton.setAttribute("aria-checked", rule.status === "enabled" ? "true" : "false");
-    switchButton.title = t(rule.status === "enabled" ? "status.disable" : "status.enable");
-    switchButton.addEventListener("click", function () {
-      toggleRule(rule.id);
-    });
-    statusBox.appendChild(switchButton);
-    statusBox.appendChild(
-      el("span", "status-text " + (rule.status === "enabled" ? "enabled" : ""), t(rule.status === "enabled" ? "filter.enabled" : "filter.disabled"))
-    );
-    statusCell.appendChild(statusBox);
-    row.appendChild(statusCell);
-
-    const updatedCell = el("td", "col-updated");
-    const updated = el("span", null, formatDate(rule.updatedAt));
-    updated.title = formatDate(rule.updatedAt);
-    updatedCell.appendChild(updated);
-    row.appendChild(updatedCell);
-
-    const actionsCell = el("td", "col-actions");
-    const actions = el("div", "row-actions");
-    const editButton = el("button", "row-action", t("row.edit"));
-    editButton.type = "button";
-    editButton.addEventListener("click", function () {
-      openRuleModal(rule.id);
-    });
-    const deleteButton = el("button", "row-action danger", t("row.delete"));
-    deleteButton.type = "button";
-    deleteButton.addEventListener("click", function () {
-      askDelete([rule.id]);
-    });
-    actions.appendChild(editButton);
-    actions.appendChild(deleteButton);
-    actionsCell.appendChild(actions);
-    row.appendChild(actionsCell);
-
-    return row;
-  }
-
-  function renderPagination(total, pages) {
-    $("page-total").textContent = t("page.total", { count: total });
-    $("page-info").textContent = t("page.info", { page: state.page, pages: pages });
-    $("page-prev").disabled = state.page <= 1;
-    $("page-next").disabled = state.page >= pages;
-  }
-
-  function renderBulk() {
-    const ids = selectedIds();
-    $("bulk-actions").hidden = ids.length === 0;
-    $("bulk-count").textContent = t("selection.count", { count: ids.length });
+  function formatDateTime(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "-";
+    return formatDate(value) + " " + pad(date.getHours()) + ":" + pad(date.getMinutes()) + ":" + pad(date.getSeconds());
   }
 
   function selectedIds() {
@@ -573,6 +438,147 @@
     });
   }
 
+  function renderAll() {
+    pruneSelection();
+    renderTable();
+    renderBulk();
+    updateSortMarks();
+  }
+
+  function renderTable() {
+    const rules = sortedRules(filteredRules());
+    const pages = Math.max(1, Math.ceil(rules.length / state.pageSize));
+    if (state.page > pages) state.page = pages;
+    if (state.page < 1) state.page = 1;
+
+    const start = (state.page - 1) * state.pageSize;
+    const pageRules = rules.slice(start, start + state.pageSize);
+    state.pageRuleCount = pageRules.length;
+    state.visibleIds = pageRules.map(function (rule) {
+      return rule.id;
+    });
+
+    const tbody = $("rules-body");
+    tbody.replaceChildren();
+    if (pageRules.length === 0) {
+      const row = el("tr", "empty-row");
+      const cell = el("td", null, t("table.empty"));
+      cell.colSpan = 9;
+      row.appendChild(cell);
+      tbody.appendChild(row);
+    } else {
+      pageRules.forEach(function (rule) {
+        tbody.appendChild(renderRow(rule));
+      });
+    }
+
+    updateSelectAllState();
+    renderPagination(rules.length, pages);
+  }
+
+  function renderRow(rule) {
+    const row = el("tr");
+
+    const selectCell = el("td", "col-select");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = Boolean(state.selected[rule.id]);
+    checkbox.setAttribute("aria-label", t("table.selectRow"));
+    checkbox.addEventListener("change", function () {
+      if (checkbox.checked) state.selected[rule.id] = true;
+      else delete state.selected[rule.id];
+      renderBulk();
+      updateSelectAllState();
+    });
+    selectCell.appendChild(checkbox);
+    row.appendChild(selectCell);
+
+    const nameCell = el("td", "col-name");
+    const name = el("div", "cell-ellipsis rule-name-text", rule.name || "(unnamed)");
+    name.title = rule.name;
+    nameCell.appendChild(name);
+    row.appendChild(nameCell);
+
+    const descriptionCell = el("td", "col-description");
+    const description = el("div", "cell-ellipsis cell-muted", rule.description || "-");
+    description.title = rule.description;
+    descriptionCell.appendChild(description);
+    row.appendChild(descriptionCell);
+
+    const patternCell = el("td", "col-pattern");
+    const pattern = el("code", "pattern-code", rule.pattern);
+    pattern.title = rule.pattern;
+    patternCell.appendChild(pattern);
+    row.appendChild(patternCell);
+
+    const actionCell = el("td", "col-action");
+    actionCell.appendChild(
+      el("span", "badge " + (rule.settings.action === "reject" ? "badge-reject" : "badge-mask"), t("action." + rule.settings.action))
+    );
+    row.appendChild(actionCell);
+
+    const scopesCell = el("td", "col-scopes");
+    scopesCell.appendChild(el("span", "badge badge-outline", String((rule.settings.scopes || []).length)));
+    row.appendChild(scopesCell);
+
+    const statusCell = el("td", "col-status");
+    const statusBox = el("div", "status-cell");
+    const switchButton = el("button", "switch");
+    switchButton.type = "button";
+    switchButton.setAttribute("role", "switch");
+    switchButton.setAttribute("aria-checked", rule.status === "enabled" ? "true" : "false");
+    switchButton.title = t(rule.status === "enabled" ? "bulk.disable" : "bulk.enable");
+    switchButton.addEventListener("click", function () {
+      askStatusChange(rule);
+    });
+    statusBox.appendChild(switchButton);
+    statusCell.appendChild(statusBox);
+    row.appendChild(statusCell);
+
+    const createdCell = el("td", "col-created");
+    const created = el("span", null, formatDate(rule.createdAt));
+    created.title = formatDateTime(rule.createdAt);
+    createdCell.appendChild(created);
+    row.appendChild(createdCell);
+
+    const actionsCell = el("td", "col-actions");
+    const menuButton = el("button", "icon-btn row-menu-trigger", "⋮");
+    menuButton.type = "button";
+    menuButton.title = t("menu.open");
+    menuButton.setAttribute("aria-label", t("menu.open"));
+    menuButton.addEventListener("click", function (event) {
+      event.stopPropagation();
+      openRowMenu(rule.id, menuButton);
+    });
+    actionsCell.appendChild(menuButton);
+    row.appendChild(actionsCell);
+
+    return row;
+  }
+
+  function updateSelectionInfo(total) {
+    const node = $("selection-info");
+    if (!node) return;
+    node.textContent = t("pagination.selected", {
+      selected: selectedIds().length,
+      count: state.pageRuleCount,
+      total: total === undefined ? filteredRules().length : total,
+    });
+  }
+
+  function renderPagination(total, pages) {
+    updateSelectionInfo(total);
+    $("page-prev").disabled = state.page <= 1;
+    $("page-next").disabled = state.page >= pages;
+  }
+
+  function renderBulk() {
+    const ids = selectedIds();
+    $("bulk-actions").hidden = ids.length === 0;
+    $("bulk-count").textContent = t("selection.count", { count: ids.length });
+    updateSelectionInfo();
+  }
+
   function updateSelectAllState() {
     const checkbox = $("select-all");
     if (!checkbox) return;
@@ -584,13 +590,23 @@
     checkbox.indeterminate = selectedVisible.length > 0 && selectedVisible.length < visible.length;
   }
 
-  function toggleRule(id) {
-    const rule = findRule(id);
-    if (!rule) return;
-    rule.status = rule.status === "enabled" ? "disabled" : "enabled";
-    rule.updatedAt = new Date().toISOString();
-    scheduleSave();
-    renderAll();
+  function askStatusChange(rule) {
+    const next = rule.status === "enabled" ? "disabled" : "enabled";
+    openConfirm({
+      title: t("statusChange.title"),
+      description: t(next === "enabled" ? "statusChange.enableDescription" : "statusChange.disableDescription", {
+        name: rule.name,
+      }),
+      confirmLabel: t("dialog.confirm"),
+      danger: false,
+      action: function () {
+        rule.status = next;
+        rule.updatedAt = new Date().toISOString();
+        state.pendingToast = t("messages.statusUpdateSuccess");
+        scheduleSave();
+        renderAll();
+      },
+    });
   }
 
   function setRulesStatus(ids, status) {
@@ -602,7 +618,6 @@
       rule.updatedAt = now;
     });
     scheduleSave();
-    renderAll();
   }
 
   function deleteRules(ids) {
@@ -615,12 +630,12 @@
       return !remove[rule.id];
     });
     scheduleSave();
-    renderAll();
   }
 
   function openRuleModal(id) {
     state.editingId = id || null;
     const rule = id ? findRule(id) : null;
+    state.editingFlags = rule ? rule.settings.flags || "" : "";
     const values = rule
       ? {
           name: rule.name,
@@ -628,7 +643,6 @@
           pattern: rule.pattern,
           action: rule.settings.action,
           replacement: rule.settings.replacement,
-          flags: rule.settings.flags,
           scopes: rule.settings.scopes.slice(),
         }
       : {
@@ -637,7 +651,6 @@
           pattern: DEFAULT_RULE.pattern,
           action: DEFAULT_RULE.action,
           replacement: DEFAULT_RULE.replacement,
-          flags: DEFAULT_RULE.flags,
           scopes: DEFAULT_RULE.scopes.slice(),
         };
 
@@ -647,7 +660,6 @@
     $("field-pattern").value = values.pattern;
     $("field-action").value = values.action;
     $("field-replacement").value = values.replacement;
-    $("field-flags").value = values.flags;
     $("field-test").value = "";
     document.querySelectorAll(".scope-option input").forEach(function (input) {
       input.checked = values.scopes.indexOf(input.value) >= 0;
@@ -667,6 +679,7 @@
   function closeRuleModal() {
     $("rule-modal").hidden = true;
     state.editingId = null;
+    state.editingFlags = "";
     previewTimer = null;
   }
 
@@ -700,7 +713,7 @@
       pattern: $("field-pattern").value,
       action: $("field-action").value === "reject" ? "reject" : "mask",
       replacement: $("field-replacement").value,
-      flags: sanitizeFlags($("field-flags").value),
+      flags: state.editingFlags,
       scopes: scopes,
     };
   }
@@ -762,6 +775,7 @@
         rule.settings.flags = data.flags;
         rule.settings.scopes = data.scopes;
         rule.updatedAt = now;
+        state.pendingToast = t("messages.updateSuccess");
       } else {
         state.rules.push({
           id: genId(),
@@ -778,6 +792,7 @@
           createdAt: now,
           updatedAt: now,
         });
+        state.pendingToast = t("messages.createSuccess");
       }
 
       closeRuleModal();
@@ -796,19 +811,22 @@
   }
 
   function updatePreview() {
+    const block = $("preview-block");
     const box = $("preview-result");
     const test = $("field-test").value;
     const pattern = $("field-pattern").value;
 
     if (!test || !pattern) {
+      block.hidden = true;
       box.dataset.state = "idle";
-      box.textContent = t("test.idle");
+      box.textContent = "";
       return;
     }
 
+    block.hidden = false;
     let regex;
     try {
-      regex = compilePattern(pattern, $("field-flags").value);
+      regex = compilePattern(pattern, state.editingFlags);
     } catch (error) {
       box.dataset.state = "invalid";
       box.textContent = t("test.invalid") + error.message;
@@ -822,9 +840,10 @@
       return;
     }
 
-    if ($("field-action").value === "reject") {
-      box.dataset.state = "reject";
-      box.textContent = t("test.rejectMatch");
+    const action = $("field-action").value;
+    if (action === "reject") {
+      box.dataset.state = "match";
+      box.textContent = t("action.reject");
       return;
     }
 
@@ -833,39 +852,90 @@
     const result = test.replace(regex, function () {
       return replacement;
     });
-
     box.dataset.state = "match";
     box.replaceChildren();
-    box.appendChild(el("div", "preview-label", t("test.maskResult")));
     box.appendChild(el("pre", null, result));
   }
 
-  function askDelete(ids) {
-    if (!ids || ids.length === 0) return;
-    state.pendingDelete = ids.slice();
-    if (ids.length === 1) {
-      const rule = findRule(ids[0]);
-      $("confirm-title").textContent = t("delete.title");
-      $("confirm-description").textContent = t("delete.description", {
-        name: rule ? rule.name : ids[0],
-      });
-    } else {
-      $("confirm-title").textContent = t("delete.bulkTitle");
-      $("confirm-description").textContent = t("delete.bulkDescription", { count: ids.length });
-    }
+  function openConfirm(options) {
+    state.pendingConfirm = options;
+    $("confirm-title").textContent = options.title;
+    $("confirm-description").textContent = options.description;
+    const action = $("confirm-action");
+    action.textContent = options.confirmLabel || t("dialog.confirm");
+    action.className = "btn " + (options.danger ? "btn-danger" : "btn-primary");
     $("confirm-modal").hidden = false;
   }
 
   function closeConfirm() {
     $("confirm-modal").hidden = true;
-    state.pendingDelete = null;
+    state.pendingConfirm = null;
   }
 
-  function confirmDelete() {
-    const ids = state.pendingDelete;
-    if (!ids) return;
-    deleteRules(ids);
+  function runConfirm() {
+    const pending = state.pendingConfirm;
     closeConfirm();
+    if (pending && typeof pending.action === "function") pending.action();
+  }
+
+  function closeRowMenu() {
+    const menu = $("row-menu");
+    if (menu) menu.hidden = true;
+  }
+
+  function openRowMenu(ruleId, anchor) {
+    const menu = $("row-menu");
+    menu.replaceChildren();
+
+    const edit = el("button", "menu-item", t("row.edit"));
+    edit.type = "button";
+    edit.addEventListener("click", function () {
+      closeRowMenu();
+      openRuleModal(ruleId);
+    });
+
+    const remove = el("button", "menu-item danger", t("row.delete"));
+    remove.type = "button";
+    remove.addEventListener("click", function () {
+      closeRowMenu();
+      const rule = findRule(ruleId);
+      openConfirm({
+        title: t("delete.title"),
+        description: t("delete.description", { name: rule ? rule.name : ruleId }),
+        confirmLabel: t("row.delete"),
+        danger: true,
+        action: function () {
+          deleteRules([ruleId]);
+          state.pendingToast = t("messages.deleteSuccess");
+          renderAll();
+        },
+      });
+    });
+
+    menu.appendChild(edit);
+    menu.appendChild(remove);
+    menu.hidden = false;
+
+    const rect = anchor.getBoundingClientRect();
+    const width = 160;
+    const height = menu.offsetHeight || 76;
+    const left = Math.max(8, Math.min(rect.right - width, window.innerWidth - width - 8));
+    const top = rect.bottom + 4 + height > window.innerHeight ? rect.top - height - 4 : rect.bottom + 4;
+    menu.style.width = width + "px";
+    menu.style.left = left + "px";
+    menu.style.top = top + "px";
+  }
+
+  function showToast(message, isError) {
+    const toast = $("toast");
+    if (!toast) return;
+    toast.textContent = message;
+    toast.className = "toast" + (isError ? " error" : "");
+    toast.hidden = false;
+    if (toastTimer) window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(function () {
+      toast.hidden = true;
+    }, 2500);
   }
 
   function optionsSnapshot() {
@@ -878,29 +948,7 @@
     return payload;
   }
 
-  function paintSaveState() {
-    const badge = $("save-state");
-    if (!badge) return;
-    const current = badge.dataset.state || "loading";
-    const keys = {
-      loading: "app.loading",
-      saved: "app.saved",
-      saving: "app.saving",
-      unsaved: "app.unsaved",
-      error: "app.saveError",
-    };
-    badge.textContent = t(keys[current] || "app.saved");
-  }
-
-  function setSaveState(value) {
-    const badge = $("save-state");
-    if (!badge) return;
-    badge.dataset.state = value;
-    paintSaveState();
-  }
-
   function scheduleSave() {
-    setSaveState("unsaved");
     if (state.saveTimer) window.clearTimeout(state.saveTimer);
     const elapsed = Date.now() - state.lastSaveAt;
     const wait = Math.max(180, 1150 - elapsed);
@@ -916,7 +964,6 @@
       return;
     }
     state.saveInFlight = true;
-    setSaveState("saving");
     try {
       if (!state.optionsReady) {
         throw new Error("options are not loaded");
@@ -928,10 +975,14 @@
       if (saved === null) throw new Error("options.set timed out");
       if (typeof saved === "object") state.options = saved;
       state.lastSaveAt = Date.now();
-      setSaveState("saved");
+      if (state.pendingToast) {
+        showToast(state.pendingToast);
+        state.pendingToast = null;
+      }
     } catch (error) {
       console.error("prompt-protection: failed to save options", error);
-      setSaveState("error");
+      state.pendingToast = null;
+      showToast(t("app.saveError"), true);
     }
     state.saveInFlight = false;
     if (state.saveQueued) {
@@ -968,19 +1019,9 @@
     $("create-rule").addEventListener("click", function () {
       openRuleModal(null);
     });
-    $("empty-create").addEventListener("click", function () {
-      openRuleModal(null);
-    });
 
     $("search").addEventListener("input", function (event) {
       state.search = event.target.value;
-      state.page = 1;
-      renderTable();
-      renderBulk();
-    });
-
-    $("status-filter").addEventListener("change", function (event) {
-      state.statusFilter = event.target.value;
       state.page = 1;
       renderTable();
       renderBulk();
@@ -994,12 +1035,9 @@
           state.sortField = field;
           state.sortDesc = field !== "name";
         }
-        document.querySelectorAll(".th-sort").forEach(function (other) {
-          const th = other.closest("th");
-          if (other === button) th.setAttribute("data-sorted", state.sortDesc ? "desc" : "asc");
-          else th.removeAttribute("data-sorted");
-        });
+        saveSortPreference();
         renderTable();
+        updateSortMarks();
       });
     });
 
@@ -1014,7 +1052,7 @@
     });
 
     $("page-size").addEventListener("change", function (event) {
-      state.pageSize = Number(event.target.value) || 10;
+      state.pageSize = Number(event.target.value) || 20;
       state.page = 1;
       renderTable();
       renderBulk();
@@ -1038,14 +1076,60 @@
       }
     });
 
+    $("bulk-clear").addEventListener("click", function () {
+      state.selected = {};
+      renderAll();
+    });
+
     $("bulk-enable").addEventListener("click", function () {
-      setRulesStatus(selectedIds(), "enabled");
+      const ids = selectedIds();
+      if (ids.length === 0) return;
+      openConfirm({
+        title: t("bulkEnable.title"),
+        description: t("bulkEnable.description", { count: ids.length }),
+        confirmLabel: t("bulk.enable"),
+        danger: false,
+        action: function () {
+          setRulesStatus(ids, "enabled");
+          state.pendingToast = t("messages.bulkEnableSuccess");
+          state.selected = {};
+          renderAll();
+        },
+      });
     });
+
     $("bulk-disable").addEventListener("click", function () {
-      setRulesStatus(selectedIds(), "disabled");
+      const ids = selectedIds();
+      if (ids.length === 0) return;
+      openConfirm({
+        title: t("bulkDisable.title"),
+        description: t("bulkDisable.description", { count: ids.length }),
+        confirmLabel: t("bulk.disable"),
+        danger: false,
+        action: function () {
+          setRulesStatus(ids, "disabled");
+          state.pendingToast = t("messages.bulkDisableSuccess");
+          state.selected = {};
+          renderAll();
+        },
+      });
     });
+
     $("bulk-delete").addEventListener("click", function () {
-      askDelete(selectedIds());
+      const ids = selectedIds();
+      if (ids.length === 0) return;
+      openConfirm({
+        title: t("bulkDelete.title"),
+        description: t("bulkDelete.description", { count: ids.length }),
+        confirmLabel: t("bulk.delete"),
+        danger: true,
+        action: function () {
+          deleteRules(ids);
+          state.pendingToast = t("messages.bulkDeleteSuccess");
+          state.selected = {};
+          renderAll();
+        },
+      });
     });
 
     $("rule-close").addEventListener("click", closeRuleModal);
@@ -1064,6 +1148,7 @@
       syncActionFields();
       schedulePreview();
     });
+
     function clearFieldErrorOnEdit(event) {
       const target = event.target;
       if (!target || !target.id) return;
@@ -1077,12 +1162,12 @@
     }
     $("rule-form").addEventListener("input", clearFieldErrorOnEdit);
     $("rule-form").addEventListener("change", clearFieldErrorOnEdit);
-    ["field-pattern", "field-replacement", "field-flags", "field-test"].forEach(function (id) {
+    ["field-pattern", "field-replacement", "field-test"].forEach(function (id) {
       $(id).addEventListener("input", schedulePreview);
     });
 
     $("confirm-cancel").addEventListener("click", closeConfirm);
-    $("confirm-delete").addEventListener("click", confirmDelete);
+    $("confirm-action").addEventListener("click", runConfirm);
 
     [$("rule-modal"), $("confirm-modal")].forEach(function (backdrop) {
       backdrop.addEventListener("click", function (event) {
@@ -1092,8 +1177,15 @@
       });
     });
 
+    document.addEventListener("click", function (event) {
+      if (!event.target.closest || !event.target.closest("#row-menu")) closeRowMenu();
+    });
+    window.addEventListener("resize", closeRowMenu);
+    window.addEventListener("scroll", closeRowMenu, true);
+
     document.addEventListener("keydown", function (event) {
       if (event.key !== "Escape") return;
+      closeRowMenu();
       if (!$("confirm-modal").hidden) closeConfirm();
       else if (!$("rule-modal").hidden) closeRuleModal();
     });
@@ -1117,6 +1209,7 @@
     bridge = window.magpie && embedded ? window.magpie : fallbackBridge();
 
     bindEvents();
+    loadSortPreference();
     applyI18n();
     renderAll();
 
@@ -1151,11 +1244,8 @@
         typeof state.options.rejectMessage === "string" && state.options.rejectMessage.trim()
           ? state.options.rejectMessage
           : DEFAULT_REJECT_MESSAGE;
-      const rejectInput = $("reject-message");
-      if (rejectInput) rejectInput.value = state.rejectMessage;
       renderAll();
     }
-    setSaveState(state.optionsReady ? "saved" : "error");
   }
 
   if (document.readyState === "loading") {
