@@ -9,6 +9,7 @@
     pattern: "",
     action: "mask",
     replacement: "[MASKED]",
+    flags: "",
     scopes: ["user"],
   };
   const PRESET_RULES_VERSION = 2;
@@ -25,7 +26,7 @@
         action: "mask",
         replacement: ".",
         scopes: ["system"],
-        flags: "",
+        flags: "s",
       },
     },
   ];
@@ -76,6 +77,7 @@
       "dialog.createDescription": "配置正则匹配规则，并选择命中后脱敏还是直接拒绝。",
       "dialog.editDescription": "更新匹配规则、处理方式和作用范围。",
       "dialog.cancel": "取消",
+      "dialog.close": "关闭",
       "dialog.createAction": "创建",
       "dialog.saveAction": "保存",
       "dialog.confirm": "确认",
@@ -84,6 +86,8 @@
       "field.pattern": "正则表达式",
       "field.action": "处理方式",
       "field.replacement": "替换文本",
+      "field.flags": "正则标志（可选）",
+      "field.flagsPlaceholder": "例如 i、m、s",
       "field.scopes": "作用范围",
       "test.title": "测试预览",
       "test.input": "测试文本",
@@ -161,6 +165,7 @@
       "dialog.createDescription": "Define a regex rule and choose whether matches are masked or rejected.",
       "dialog.editDescription": "Update the matching pattern, action, and scope settings.",
       "dialog.cancel": "Cancel",
+      "dialog.close": "Close",
       "dialog.createAction": "Create",
       "dialog.saveAction": "Save",
       "dialog.confirm": "Confirm",
@@ -169,6 +174,8 @@
       "field.pattern": "Pattern",
       "field.action": "Action",
       "field.replacement": "Replacement",
+      "field.flags": "Regex flags (optional)",
+      "field.flagsPlaceholder": "e.g. i, m, s",
       "field.scopes": "Scopes",
       "test.title": "Test Preview",
       "test.input": "Test Input",
@@ -217,7 +224,6 @@
     selected: {},
     visibleIds: [],
     editingId: null,
-    editingFlags: "",
     pendingConfirm: null,
     pendingToast: null,
     saveTimer: null,
@@ -547,6 +553,7 @@
     switchButton.type = "button";
     switchButton.setAttribute("role", "switch");
     switchButton.setAttribute("aria-checked", rule.status === "enabled" ? "true" : "false");
+    switchButton.setAttribute("aria-label", t(rule.status === "enabled" ? "bulk.disable" : "bulk.enable"));
     switchButton.title = t(rule.status === "enabled" ? "bulk.disable" : "bulk.enable");
     switchButton.addEventListener("click", function () {
       askStatusChange(rule);
@@ -655,7 +662,6 @@
   function openRuleModal(id) {
     state.editingId = id || null;
     const rule = id ? findRule(id) : null;
-    state.editingFlags = rule ? rule.settings.flags || "" : "";
     const values = rule
       ? {
           name: rule.name,
@@ -663,6 +669,7 @@
           pattern: rule.pattern,
           action: rule.settings.action,
           replacement: rule.settings.replacement,
+          flags: rule.settings.flags,
           scopes: rule.settings.scopes.slice(),
         }
       : {
@@ -671,6 +678,7 @@
           pattern: DEFAULT_RULE.pattern,
           action: DEFAULT_RULE.action,
           replacement: DEFAULT_RULE.replacement,
+          flags: DEFAULT_RULE.flags,
           scopes: DEFAULT_RULE.scopes.slice(),
         };
 
@@ -680,6 +688,7 @@
     $("field-pattern").value = values.pattern;
     $("field-action").value = values.action;
     $("field-replacement").value = values.replacement;
+    $("field-flags").value = values.flags;
     $("field-test").value = "";
     document.querySelectorAll(".scope-option input").forEach(function (input) {
       input.checked = values.scopes.indexOf(input.value) >= 0;
@@ -699,7 +708,6 @@
   function closeRuleModal() {
     $("rule-modal").hidden = true;
     state.editingId = null;
-    state.editingFlags = "";
     previewTimer = null;
   }
 
@@ -733,7 +741,7 @@
       pattern: $("field-pattern").value,
       action: $("field-action").value === "reject" ? "reject" : "mask",
       replacement: $("field-replacement").value,
-      flags: state.editingFlags,
+      flags: sanitizeFlags($("field-flags").value),
       scopes: scopes,
     };
   }
@@ -849,7 +857,7 @@
 
     let regex;
     try {
-      regex = compilePattern(pattern, state.editingFlags);
+      regex = compilePattern(pattern, $("field-flags").value);
     } catch (error) {
       box.dataset.state = "invalid";
       box.textContent = t("test.invalid") + error.message;
@@ -888,6 +896,9 @@
     action.textContent = options.confirmLabel || t("dialog.confirm");
     action.className = "btn " + (options.danger ? "btn-danger" : "btn-primary");
     $("confirm-modal").hidden = false;
+    window.setTimeout(function () {
+      action.focus();
+    }, 30);
   }
 
   function closeConfirm() {
@@ -1185,7 +1196,7 @@
     }
     $("rule-form").addEventListener("input", clearFieldErrorOnEdit);
     $("rule-form").addEventListener("change", clearFieldErrorOnEdit);
-    ["field-pattern", "field-replacement", "field-test"].forEach(function (id) {
+    ["field-pattern", "field-replacement", "field-flags", "field-test"].forEach(function (id) {
       $(id).addEventListener("input", schedulePreview);
     });
     document.querySelectorAll(".scope-option input").forEach(function (input) {
@@ -1210,6 +1221,34 @@
     window.addEventListener("scroll", closeRowMenu, true);
 
     document.addEventListener("keydown", function (event) {
+      if (event.key === "Tab") {
+        const backdrop = !$("confirm-modal").hidden
+          ? $("confirm-modal")
+          : !$("rule-modal").hidden
+            ? $("rule-modal")
+            : null;
+        if (!backdrop) return;
+        const focusable = Array.prototype.filter.call(
+          backdrop.querySelectorAll(
+            'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+          ),
+          function (node) {
+            return node.getClientRects().length > 0;
+          }
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const outside = !backdrop.contains(document.activeElement);
+        if (event.shiftKey && (outside || document.activeElement === first)) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && (outside || document.activeElement === last)) {
+          event.preventDefault();
+          first.focus();
+        }
+        return;
+      }
       if (event.key !== "Escape") return;
       closeRowMenu();
       if (!$("confirm-modal").hidden) closeConfirm();
@@ -1218,16 +1257,28 @@
   }
 
   function withTimeout(promise, ms, fallbackValue) {
-    return Promise.race([
-      Promise.resolve(promise).catch(function () {
-        return fallbackValue;
-      }),
-      new Promise(function (resolve) {
-        window.setTimeout(function () {
+    return new Promise(function (resolve) {
+      let settled = false;
+      const timer = window.setTimeout(function () {
+        if (settled) return;
+        settled = true;
+        resolve(fallbackValue);
+      }, ms);
+      Promise.resolve(promise).then(
+        function (value) {
+          if (settled) return;
+          settled = true;
+          window.clearTimeout(timer);
+          resolve(value);
+        },
+        function () {
+          if (settled) return;
+          settled = true;
+          window.clearTimeout(timer);
           resolve(fallbackValue);
-        }, ms);
-      }),
-    ]);
+        }
+      );
+    });
   }
 
   async function boot() {

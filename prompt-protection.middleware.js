@@ -27,9 +27,9 @@
 // tool arguments and non-text content are left untouched.
 
 const DEFAULT_REJECT_MESSAGE = "request blocked by prompt protection policy";
-const VALID_SCOPES = ["system", "developer", "user", "assistant", "tool"];
+const REGEX_CACHE_LIMIT = 256;
 
-let regexCache = Object.create(null);
+const regexCache = new Map();
 
 export function onRequest(body, ctx) {
   if (!body || typeof body !== "object") return;
@@ -90,12 +90,12 @@ function compileRule(rule) {
   const extraFlags = typeof settings.flags === "string" ? settings.flags : "";
   const key = extraFlags + "\u0000" + rule.pattern;
 
-  if (Object.prototype.hasOwnProperty.call(regexCache, key)) return regexCache[key];
+  if (regexCache.has(key)) return regexCache.get(key);
 
   const normalized = normalizePattern(rule.pattern, extraFlags);
   try {
     const re = new RegExp(normalized.source, normalized.flags);
-    regexCache[key] = re;
+    rememberRegex(key, re);
     return re;
   } catch (err) {
     console.log(
@@ -104,8 +104,15 @@ function compileRule(rule) {
         ": " +
         err.message
     );
-    regexCache[key] = null;
+    rememberRegex(key, null);
     return null;
+  }
+}
+
+function rememberRegex(key, value) {
+  regexCache.set(key, value);
+  if (regexCache.size > REGEX_CACHE_LIMIT) {
+    regexCache.delete(regexCache.keys().next().value);
   }
 }
 

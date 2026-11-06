@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>提示保护规则 · Magpie</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=0.2.9">
+  <link rel="stylesheet" href="style.css?v=0.3.0">
   <script src="_magpie/bridge.js" defer></script>
-  <script src="app.js?v=0.2.9" defer></script>
+  <script src="app.js?v=0.3.0" defer></script>
 </head>
 <body>
   <main class="shell">
@@ -106,7 +106,7 @@
           <h2 id="rule-modal-title">创建提示保护规则</h2>
           <p id="rule-modal-subtitle" class="modal-subtitle" data-i18n="dialog.createDescription">配置正则匹配规则，并选择命中后脱敏还是直接拒绝。</p>
         </div>
-        <button id="rule-close" class="icon-btn" type="button" aria-label="Close">&#10005;</button>
+        <button id="rule-close" class="icon-btn" type="button" data-i18n-title="dialog.close" title="关闭" aria-label="关闭">&#10005;</button>
       </header>
 
       <form id="rule-form" class="rule-form" novalidate>
@@ -128,7 +128,7 @@
           <small class="field-error" id="error-pattern" hidden></small>
         </label>
 
-        <div class="form-grid">
+        <div class="form-grid form-grid-3">
           <label class="field">
             <span class="field-label" data-i18n="field.action">处理方式</span>
             <select id="field-action" class="select">
@@ -140,6 +140,10 @@
             <span class="field-label" data-i18n="field.replacement">替换文本</span>
             <input id="field-replacement" maxlength="200" autocomplete="off">
             <small class="field-error" id="error-replacement" hidden></small>
+          </label>
+          <label class="field">
+            <span class="field-label" data-i18n="field.flags">正则标志（可选）</span>
+            <input id="field-flags" maxlength="6" autocomplete="off" spellcheck="false" data-i18n-placeholder="field.flagsPlaceholder" placeholder="例如 i、m、s">
           </label>
         </div>
 
