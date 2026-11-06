@@ -71,6 +71,7 @@
       "test.input": "测试文本",
       "test.result": "预览结果",
       "test.placeholder": "输入测试文本以预览正则替换效果",
+      "test.idle": "输入测试文本后显示预览结果",
       "test.noMatch": "无匹配",
       "test.invalid": "无效的正则表达式：",
       "validation.nameRequired": "请输入名称",
@@ -155,6 +156,7 @@
       "test.input": "Test Input",
       "test.result": "Preview Result",
       "test.placeholder": "Enter test text to preview regex replacement",
+      "test.idle": "Enter test text to see the preview result",
       "test.noMatch": "No match",
       "test.invalid": "Invalid regex pattern: ",
       "validation.nameRequired": "Name is required",
@@ -811,19 +813,16 @@
   }
 
   function updatePreview() {
-    const block = $("preview-block");
     const box = $("preview-result");
     const test = $("field-test").value;
     const pattern = $("field-pattern").value;
 
     if (!test) {
-      block.hidden = true;
       box.dataset.state = "idle";
-      box.textContent = "";
+      box.textContent = t("test.idle");
       return;
     }
 
-    block.hidden = false;
     if (!pattern) {
       box.dataset.state = "idle";
       box.textContent = t("test.noMatch");
