@@ -5,16 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>提示保护 · Magpie</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=0.1.4">
   <script src="_magpie/bridge.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="app.js?v=0.1.4" defer></script>
 </head>
 <body>
   <main class="shell">
     <header class="page-head">
       <div class="head-copy">
         <div class="eyebrow" data-i18n="app.eyebrow">MAGPIE · 网关中间件</div>
-        <h1 data-i18n="app.title">提示保护</h1>
+        <div class="title-row">
+          <h1 data-i18n="app.title">提示保护</h1>
+          <span class="app-version" title="Plugin version">v0.1.4</span>
+        </div>
         <p data-i18n="app.subtitle">在请求发往模型之前，用正则规则对提示内容进行脱敏或拒绝。</p>
       </div>
       <div class="head-actions">
