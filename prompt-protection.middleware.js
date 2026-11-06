@@ -44,6 +44,8 @@ export function onRequest(body, ctx) {
       ? options.rejectMessage.trim()
       : DEFAULT_REJECT_MESSAGE;
 
+  let modified = false;
+
   for (const rule of rules) {
     if (!rule || typeof rule !== "object" || rule.status !== "enabled") continue;
     if (typeof rule.pattern !== "string" || rule.pattern.length === 0) continue;
@@ -77,7 +79,10 @@ export function onRequest(body, ctx) {
       if (ctx && typeof ctx.reject === "function") ctx.reject(400, rejectMessage);
       return;
     }
+    if (matched) modified = true;
   }
+
+  if (modified) return body;
 }
 
 function compileRule(rule) {
