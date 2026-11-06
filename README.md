@@ -49,10 +49,8 @@ magpie plugin add ./magpie-prompt-protection
 3. 如果选择「脱敏」，填写替换文本
 4. 勾选需要保护的消息角色，或留空表示全部角色
 5. 在「测试预览」里输入一段文本，确认匹配结果
-6. 保存并在列表里打开状态开关
+6. 保存后规则默认启用；如需停用，可在列表里关闭状态开关
 7. 之后所有经过 Magpie 网关的请求都会自动执行这条规则
-
-新建规则默认是**禁用**状态，需要手动启用。
 
 ## 规则结构
 
@@ -90,7 +88,7 @@ magpie plugin add ./magpie-prompt-protection
 | `settings.replacement` | `mask` 时的替换文本，按字面量使用（不解析 `$1`） |
 | `settings.scopes` | 作用角色数组；空数组表示全部 |
 | `settings.flags` | 可选的 JS 正则标志：`i`、`m`、`s`、`u`；`g` 会自动加上 |
-| `status` | `enabled` 或 `disabled`；新建默认 `disabled` |
+| `status` | `enabled` 或 `disabled`；新建默认 `enabled` |
 | `rejectMessage` | 命中 `reject` 规则时返回给 Agent 的错误文本 |
 
 规则按数组顺序执行。每条 `mask` 规则在前一条的结果上继续替换；任意一条 `reject` 规则命中后立即拒绝，不再执行后续规则。

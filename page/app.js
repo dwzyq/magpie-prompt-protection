@@ -24,7 +24,6 @@
       "app.saving": "保存中…",
       "app.unsaved": "未保存",
       "app.saveError": "保存失败",
-      "app.footnote": "规则仅在 Magpie 网关内本地执行；页面不读取、不存储任何对话内容。",
       "stats.total": "规则总数",
       "stats.enabled": "已启用",
       "stats.reject": "拒绝规则",
@@ -70,7 +69,6 @@
       "dialog.cancel": "取消",
       "dialog.createAction": "创建",
       "dialog.saveAction": "保存",
-      "dialog.newDisabledHint": "新建规则默认禁用，创建后请在列表中启用。",
       "field.name": "名称",
       "field.description": "描述",
       "field.pattern": "正则表达式",
@@ -114,7 +112,6 @@
       "app.saving": "Saving…",
       "app.unsaved": "Unsaved",
       "app.saveError": "Save failed",
-      "app.footnote": "Rules run locally inside the Magpie gateway. This page never reads or stores conversation content.",
       "stats.total": "Total rules",
       "stats.enabled": "Enabled",
       "stats.reject": "Reject rules",
@@ -160,7 +157,6 @@
       "dialog.cancel": "Cancel",
       "dialog.createAction": "Create",
       "dialog.saveAction": "Save",
-      "dialog.newDisabledHint": "New rules start disabled. Enable them from the list.",
       "field.name": "Name",
       "field.description": "Description",
       "field.pattern": "Pattern",
@@ -269,10 +265,8 @@
     const isEdit = Boolean(state.editingId);
     const title = $("rule-modal-title");
     const submit = $("rule-submit");
-    const note = $("form-note");
     if (title) title.textContent = t(isEdit ? "dialog.editTitle" : "dialog.createTitle");
     if (submit) submit.textContent = t(isEdit ? "dialog.saveAction" : "dialog.createAction");
-    if (note) note.hidden = isEdit;
   }
 
   function updateSortMarks() {
@@ -774,7 +768,7 @@
           name: data.name,
           description: data.description,
           pattern: data.pattern,
-          status: "disabled",
+          status: "enabled",
           settings: {
             action: data.action,
             replacement: data.replacement,
