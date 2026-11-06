@@ -1171,6 +1171,9 @@
     ["field-pattern", "field-replacement", "field-test"].forEach(function (id) {
       $(id).addEventListener("input", schedulePreview);
     });
+    document.querySelectorAll(".scope-option input").forEach(function (input) {
+      input.addEventListener("change", schedulePreview);
+    });
 
     $("confirm-cancel").addEventListener("click", closeConfirm);
     $("confirm-action").addEventListener("click", runConfirm);
