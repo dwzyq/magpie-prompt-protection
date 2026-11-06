@@ -287,10 +287,29 @@
   }
 
   function genId() {
-    if (window.crypto && typeof window.crypto.randomUUID === "function") {
-      return window.crypto.randomUUID();
+    try {
+      if (window.crypto && typeof window.crypto.randomUUID === "function") {
+        return window.crypto.randomUUID();
+      }
+    } catch (error) {
+      // Sandboxed frames can expose randomUUID but reject it as insecure.
     }
-    return "rule-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+    let random = "";
+    try {
+      if (window.crypto && typeof window.crypto.getRandomValues === "function") {
+        const bytes = new Uint8Array(8);
+        window.crypto.getRandomValues(bytes);
+        random = Array.prototype.map
+          .call(bytes, function (byte) {
+            return byte.toString(16).padStart(2, "0");
+          })
+          .join("");
+      }
+    } catch (error) {
+      random = "";
+    }
+    if (!random) random = Math.random().toString(36).slice(2, 12);
+    return "rule-" + Date.now().toString(36) + "-" + random;
   }
 
   function normalizeRule(raw) {
@@ -736,39 +755,45 @@
     const data = validateForm();
     if (!data) return;
 
-    const now = new Date().toISOString();
-    if (state.editingId) {
-      const rule = findRule(state.editingId);
-      if (!rule) return;
-      rule.name = data.name;
-      rule.description = data.description;
-      rule.pattern = data.pattern;
-      rule.settings.action = data.action;
-      rule.settings.replacement = data.replacement;
-      rule.settings.flags = data.flags;
-      rule.settings.scopes = data.scopes;
-      rule.updatedAt = now;
-    } else {
-      state.rules.push({
-        id: genId(),
-        name: data.name,
-        description: data.description,
-        pattern: data.pattern,
-        status: "disabled",
-        settings: {
-          action: data.action,
-          replacement: data.replacement,
-          scopes: data.scopes,
-          flags: data.flags,
-        },
-        createdAt: now,
-        updatedAt: now,
-      });
-    }
+    try {
+      const now = new Date().toISOString();
+      if (state.editingId) {
+        const rule = findRule(state.editingId);
+        if (!rule) return;
+        rule.name = data.name;
+        rule.description = data.description;
+        rule.pattern = data.pattern;
+        rule.settings.action = data.action;
+        rule.settings.replacement = data.replacement;
+        rule.settings.flags = data.flags;
+        rule.settings.scopes = data.scopes;
+        rule.updatedAt = now;
+      } else {
+        state.rules.push({
+          id: genId(),
+          name: data.name,
+          description: data.description,
+          pattern: data.pattern,
+          status: "disabled",
+          settings: {
+            action: data.action,
+            replacement: data.replacement,
+            scopes: data.scopes,
+            flags: data.flags,
+          },
+          createdAt: now,
+          updatedAt: now,
+        });
+      }
 
-    closeRuleModal();
-    scheduleSave();
-    renderAll();
+      closeRuleModal();
+      scheduleSave();
+      renderAll();
+    } catch (error) {
+      console.error("prompt-protection: failed to save rule", error);
+      $("form-error").textContent = String((error && error.message) || error);
+      $("form-error").hidden = false;
+    }
   }
 
   function schedulePreview() {
