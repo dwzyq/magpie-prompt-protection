@@ -11,6 +11,24 @@
     replacement: "[MASKED]",
     scopes: ["user"],
   };
+  const PRESET_RULES_VERSION = 1;
+  const PRESET_RULES = [
+    {
+      id: "preset-jailbreak",
+      name: "破限",
+      description: "预设规则",
+      pattern: "IMPORTANT: Assist with authorized security testing.*?or defensive use cases.",
+      status: "disabled",
+      createdAt: "2026-11-06T00:00:00.000Z",
+      updatedAt: "2026-11-06T00:00:00.000Z",
+      settings: {
+        action: "mask",
+        replacement: ".",
+        scopes: ["system"],
+        flags: "",
+      },
+    },
+  ];
 
   const TEXT = {
     zh: {
@@ -1248,11 +1266,26 @@
       state.options = options;
       state.optionsReady = true;
       state.rules = normalizeRules(state.options.rules);
+      let seededPreset = false;
+      if (state.options.presetRulesVersion !== PRESET_RULES_VERSION) {
+        PRESET_RULES.forEach(function (preset) {
+          const exists = state.rules.some(function (rule) {
+            return rule.id === preset.id || rule.name === preset.name;
+          });
+          if (!exists) {
+            const normalized = normalizeRule(preset);
+            if (normalized) state.rules.push(normalized);
+          }
+        });
+        state.options.presetRulesVersion = PRESET_RULES_VERSION;
+        seededPreset = true;
+      }
       state.rejectMessage =
         typeof state.options.rejectMessage === "string" && state.options.rejectMessage.trim()
           ? state.options.rejectMessage
           : DEFAULT_REJECT_MESSAGE;
       renderAll();
+      if (seededPreset) scheduleSave();
     }
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "magpie-prompt-protection",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Magpie gateway middleware and management page: regex-based prompt protection with mask or reject actions and per-role scopes.",
   "type": "module",
   "files": [
@@ -48,7 +48,26 @@
     },
     "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSJub25lIj4KICA8cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxNSIgZmlsbD0iIzRmNDZlNSIvPgogIDxwYXRoIGQ9Ik0zMiAxMS41IDQ5IDE4djEyLjhjMCAxMC42LTYuOSAxOC42LTE3IDIyLjItMTAuMS0zLjYtMTctMTEuNi0xNy0yMi4yVjE4bDE3LTYuNVoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIzLjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8cGF0aCBkPSJNMjQgMzIuNWgxNk0yOCAyNi41djEyTTM2IDI2LjV2MTIiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iLjkiLz4KPC9zdmc+Cg==",
     "options": {
-      "rules": [],
+      "presetRulesVersion": 1,
+      "rules": [
+        {
+          "id": "preset-jailbreak",
+          "name": "破限",
+          "description": "预设规则",
+          "pattern": "IMPORTANT: Assist with authorized security testing.*?or defensive use cases.",
+          "status": "disabled",
+          "createdAt": "2026-11-06T00:00:00.000Z",
+          "updatedAt": "2026-11-06T00:00:00.000Z",
+          "settings": {
+            "action": "mask",
+            "replacement": ".",
+            "scopes": [
+              "system"
+            ],
+            "flags": ""
+          }
+        }
+      ],
       "rejectMessage": "request blocked by prompt protection policy"
     }
   }
