@@ -26,7 +26,7 @@
         action: "mask",
         replacement: ".",
         scopes: ["system"],
-        flags: "s",
+        flags: "",
       },
     },
   ];
