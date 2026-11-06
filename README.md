@@ -84,7 +84,7 @@ magpie plugin add ./magpie-prompt-protection
 | --- | --- |
 | `pattern` | 正则表达式，默认区分大小写 |
 | `settings.action` | `mask` 或 `reject` |
-| `settings.replacement` | `mask` 时的替换文本，按字面量使用（不解析 `$1`） |
+| `settings.replacement` | `mask` 时的替换文本，支持 `$1` 和 `${name}` 捕获组引用 |
 | `settings.scopes` | 作用角色数组；空数组表示全部 |
 | `status` | `enabled` 或 `disabled`；新建默认 `enabled` |
 | `rejectMessage` | 命中 `reject` 规则时返回给 Agent 的错误文本 |

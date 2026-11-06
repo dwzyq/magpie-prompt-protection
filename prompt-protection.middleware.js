@@ -63,15 +63,14 @@ export function onRequest(body, ctx) {
       if (!scopeMatches(scopes, role)) return;
 
       const value = holder[key];
+      if (value === "") return;
       regex.lastIndex = 0;
       if (!regex.test(value)) return;
 
       matched = true;
       if (action === "mask") {
         regex.lastIndex = 0;
-        holder[key] = value.replace(regex, function () {
-          return replacement;
-        });
+        holder[key] = value.replace(regex, replacementTemplate(replacement));
       }
     });
 
@@ -118,7 +117,9 @@ function rememberRegex(key, value) {
 // (?i) and (?im), into JavaScript RegExp flags. The middleware always adds
 // "g" so every occurrence is replaced.
 function normalizePattern(pattern) {
-  let source = String(pattern);
+  let source = String(pattern).replace(/\(\?'([A-Za-z_][A-Za-z0-9_]*)'/g, function (match, name) {
+    return "(?<" + name + ">";
+  });
   let flags = "";
 
   for (;;) {
@@ -128,8 +129,21 @@ function normalizePattern(pattern) {
     source = source.slice(match[0].length);
   }
 
+  if (/\\[pP]\{/.test(source) && flags.indexOf("u") < 0) flags += "u";
   if (flags.indexOf("g") < 0) flags += "g";
   return { source: source, flags: flags };
+}
+
+// AxonHub's regexp2 replacement expands $1 and ${name}; JavaScript spells
+// the latter $<name>.
+function replacementTemplate(template) {
+  return String(template || "")
+    .replace(/\$0\b/g, function () {
+      return "$&";
+    })
+    .replace(/\$\{([A-Za-z_][A-Za-z0-9_]*)\}/g, function (match, name) {
+      return "$<" + name + ">";
+    });
 }
 
 function sanitizeFlags(value) {

@@ -387,7 +387,9 @@
   }
 
   function compilePattern(pattern) {
-    let source = String(pattern || "");
+    let source = String(pattern || "").replace(/\(\?'([A-Za-z_][A-Za-z0-9_]*)'/g, function (match, name) {
+      return "(?<" + name + ">";
+    });
     let finalFlags = "";
     for (;;) {
       const match = source.match(/^\(\?([ims]+)\)/);
@@ -395,8 +397,21 @@
       finalFlags = sanitizeFlags(finalFlags + match[1]);
       source = source.slice(match[0].length);
     }
+    if (/\\[pP]\{/.test(source) && finalFlags.indexOf("u") < 0) finalFlags += "u";
     if (finalFlags.indexOf("g") < 0) finalFlags += "g";
     return new RegExp(source, finalFlags);
+  }
+
+  // AxonHub's regexp2 replacement expands $1 and ${name}; JavaScript spells
+  // the latter $<name>.
+  function replacementTemplate(template) {
+    return String(template || "")
+      .replace(/\$0\b/g, function () {
+        return "$&";
+      })
+      .replace(/\$\{([A-Za-z_][A-Za-z0-9_]*)\}/g, function (match, name) {
+        return "$<" + name + ">";
+      });
   }
 
   function findRule(id) {
@@ -865,10 +880,8 @@
     }
 
     regex.lastIndex = 0;
-    const replacement = $("field-replacement").value || "";
-    const result = test.replace(regex, function () {
-      return replacement;
-    });
+    const replacement = $("field-replacement").value || "[MASKED]";
+    const result = test.replace(regex, replacementTemplate(replacement));
     box.dataset.state = "match";
     box.replaceChildren();
     box.appendChild(el("pre", null, result));
