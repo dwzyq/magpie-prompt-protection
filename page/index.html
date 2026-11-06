@@ -99,8 +99,8 @@
           <label class="page-size-label">
             <span data-i18n="page.size">每页</span>
             <select id="page-size" class="select select-mini">
-              <option value="10">10</option>
-              <option value="20" selected>20</option>
+              <option value="10" selected>10</option>
+              <option value="20">20</option>
               <option value="50">50</option>
               <option value="100">100</option>
             </select>
@@ -152,7 +152,7 @@
 
         <label class="field">
           <span class="field-label" data-i18n="field.pattern">正则表达式</span>
-          <textarea id="field-pattern" rows="4" spellcheck="false" class="mono" required></textarea>
+          <textarea id="field-pattern" rows="3" spellcheck="false" class="mono" required></textarea>
           <small class="field-error" id="error-pattern" hidden></small>
         </label>
 
@@ -194,7 +194,7 @@
           </div>
           <label class="field">
             <span class="field-label" data-i18n="test.input">测试文本</span>
-            <textarea id="field-test" rows="3" spellcheck="false" data-i18n-placeholder="test.placeholder" placeholder="输入一段文本，实时查看正则匹配效果"></textarea>
+            <textarea id="field-test" rows="2" spellcheck="false" data-i18n-placeholder="test.placeholder" placeholder="输入一段文本，实时查看正则匹配效果"></textarea>
           </label>
           <div id="preview-result" class="preview-result" data-state="idle">
             <span data-i18n="test.idle">输入测试文本后显示预览</span>

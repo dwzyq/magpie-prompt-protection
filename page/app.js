@@ -206,7 +206,7 @@
     sortField: "updatedAt",
     sortDesc: true,
     page: 1,
-    pageSize: 20,
+    pageSize: 10,
     selected: {},
     visibleIds: [],
     editingId: null,
@@ -215,6 +215,7 @@
     lastSaveAt: 0,
     saveInFlight: false,
     saveQueued: false,
+    optionsReady: false,
   };
 
   let bridge = null;
@@ -898,8 +899,15 @@
     state.saveInFlight = true;
     setSaveState("saving");
     try {
-      const saved = await bridge.options.set(optionsSnapshot());
-      if (saved && typeof saved === "object") state.options = saved;
+      if (!state.optionsReady) {
+        throw new Error("options are not loaded");
+      }
+      if (!bridge.options || typeof bridge.options.set !== "function") {
+        throw new Error("options.set is unavailable");
+      }
+      const saved = await withTimeout(bridge.options.set(optionsSnapshot()), 6000, null);
+      if (saved === null) throw new Error("options.set timed out");
+      if (typeof saved === "object") state.options = saved;
       state.lastSaveAt = Date.now();
       setSaveState("saved");
     } catch (error) {
@@ -987,7 +995,7 @@
     });
 
     $("page-size").addEventListener("change", function (event) {
-      state.pageSize = Number(event.target.value) || 20;
+      state.pageSize = Number(event.target.value) || 10;
       state.page = 1;
       renderTable();
       renderBulk();
@@ -1055,44 +1063,62 @@
     });
   }
 
+  function withTimeout(promise, ms, fallbackValue) {
+    return Promise.race([
+      Promise.resolve(promise).catch(function () {
+        return fallbackValue;
+      }),
+      new Promise(function (resolve) {
+        window.setTimeout(function () {
+          resolve(fallbackValue);
+        }, ms);
+      }),
+    ]);
+  }
+
   async function boot() {
-    bridge = window.magpie || fallbackBridge();
-    try {
-      const theme = await bridge.ready;
-      state.lang = normalizeLang(theme && theme.lang);
+    const embedded = window.parent !== window;
+    bridge = window.magpie && embedded ? window.magpie : fallbackBridge();
+
+    bindEvents();
+    applyI18n();
+    renderAll();
+
+    const theme = await withTimeout(bridge.ready, 4000, null);
+    if (theme && typeof theme === "object") {
+      state.lang = normalizeLang(theme.lang);
       applyTheme(theme);
-    } catch (error) {
+    } else {
       state.lang = normalizeLang(navigator.language);
     }
+    applyI18n();
 
     if (typeof bridge.onTheme === "function") {
-      bridge.onTheme(function (theme) {
-        state.lang = normalizeLang(theme && theme.lang);
-        applyTheme(theme);
+      bridge.onTheme(function (nextTheme) {
+        state.lang = normalizeLang(nextTheme && nextTheme.lang);
+        applyTheme(nextTheme);
         applyI18n();
         renderAll();
         if (!$("rule-modal").hidden) updatePreview();
       });
     }
 
-    try {
-      const options = await bridge.options.get();
-      state.options = options && typeof options === "object" ? options : {};
-    } catch (error) {
-      state.options = {};
+    let options = null;
+    if (bridge.options && typeof bridge.options.get === "function") {
+      options = await withTimeout(bridge.options.get(), 4000, null);
     }
-
-    state.rules = normalizeRules(state.options.rules);
-    state.rejectMessage =
-      typeof state.options.rejectMessage === "string" && state.options.rejectMessage.trim()
-        ? state.options.rejectMessage
-        : DEFAULT_REJECT_MESSAGE;
-    $("reject-message").value = state.rejectMessage;
-
-    bindEvents();
-    applyI18n();
-    renderAll();
-    setSaveState("saved");
+    if (options && typeof options === "object") {
+      state.options = options;
+      state.optionsReady = true;
+      state.rules = normalizeRules(state.options.rules);
+      state.rejectMessage =
+        typeof state.options.rejectMessage === "string" && state.options.rejectMessage.trim()
+          ? state.options.rejectMessage
+          : DEFAULT_REJECT_MESSAGE;
+      $("reject-message").value = state.rejectMessage;
+      renderAll();
+    }
+    setSaveState(state.optionsReady ? "saved" : "error");
   }
 
   if (document.readyState === "loading") {
