@@ -86,13 +86,11 @@ export function onRequest(body, ctx) {
 }
 
 function compileRule(rule) {
-  const settings = rule.settings && typeof rule.settings === "object" ? rule.settings : {};
-  const extraFlags = typeof settings.flags === "string" ? settings.flags : "";
-  const key = extraFlags + "\u0000" + rule.pattern;
+  const key = rule.pattern;
 
   if (regexCache.has(key)) return regexCache.get(key);
 
-  const normalized = normalizePattern(rule.pattern, extraFlags);
+  const normalized = normalizePattern(rule.pattern);
   try {
     const re = new RegExp(normalized.source, normalized.flags);
     rememberRegex(key, re);
@@ -117,12 +115,11 @@ function rememberRegex(key, value) {
 }
 
 // Convert the .NET-style leading inline flags AxonHub documents, such as
-// (?i) and (?im), into JavaScript RegExp flags. A per-rule "flags" field is
-// also supported. The middleware always adds "g" so every occurrence is
-// replaced.
-function normalizePattern(pattern, extraFlags) {
+// (?i) and (?im), into JavaScript RegExp flags. The middleware always adds
+// "g" so every occurrence is replaced.
+function normalizePattern(pattern) {
   let source = String(pattern);
-  let flags = sanitizeFlags(extraFlags);
+  let flags = "";
 
   for (;;) {
     const match = source.match(/^\(\?([ims]+)\)/);

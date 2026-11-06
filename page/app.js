@@ -25,7 +25,6 @@
         action: "mask",
         replacement: ".",
         scopes: ["system"],
-        flags: "",
       },
     },
   ];
@@ -219,7 +218,6 @@
     selected: {},
     visibleIds: [],
     editingId: null,
-    editingFlags: "",
     pendingConfirm: null,
     pendingToast: null,
     saveTimer: null,
@@ -369,7 +367,6 @@
         action: settings.action === "reject" ? "reject" : "mask",
         replacement: typeof settings.replacement === "string" ? settings.replacement : "",
         scopes: scopes,
-        flags: typeof settings.flags === "string" ? settings.flags : "",
       },
       createdAt: typeof raw.createdAt === "string" && raw.createdAt ? raw.createdAt : new Date().toISOString(),
       updatedAt: typeof raw.updatedAt === "string" && raw.updatedAt ? raw.updatedAt : new Date().toISOString(),
@@ -390,9 +387,9 @@
     return flags;
   }
 
-  function compilePattern(pattern, flags) {
+  function compilePattern(pattern) {
     let source = String(pattern || "");
-    let finalFlags = sanitizeFlags(flags);
+    let finalFlags = "";
     for (;;) {
       const match = source.match(/^\(\?([ims]+)\)/);
       if (!match) break;
@@ -658,7 +655,6 @@
   function openRuleModal(id) {
     state.editingId = id || null;
     const rule = id ? findRule(id) : null;
-    state.editingFlags = rule ? rule.settings.flags || "" : "";
     const values = rule
       ? {
           name: rule.name,
@@ -702,7 +698,6 @@
   function closeRuleModal() {
     $("rule-modal").hidden = true;
     state.editingId = null;
-    state.editingFlags = "";
     previewTimer = null;
   }
 
@@ -736,7 +731,6 @@
       pattern: $("field-pattern").value,
       action: $("field-action").value === "reject" ? "reject" : "mask",
       replacement: $("field-replacement").value,
-      flags: state.editingFlags,
       scopes: scopes,
     };
   }
@@ -765,7 +759,7 @@
       valid = false;
     } else {
       try {
-        compilePattern(data.pattern, data.flags);
+        compilePattern(data.pattern);
       } catch (error) {
         setFieldError("error-pattern", t("validation.patternInvalid") + error.message);
         valid = false;
@@ -795,7 +789,6 @@
         rule.pattern = data.pattern;
         rule.settings.action = data.action;
         rule.settings.replacement = data.replacement;
-        rule.settings.flags = data.flags;
         rule.settings.scopes = data.scopes;
         rule.updatedAt = now;
         state.pendingToast = t("messages.updateSuccess");
@@ -810,7 +803,6 @@
             action: data.action,
             replacement: data.replacement,
             scopes: data.scopes,
-            flags: data.flags,
           },
           createdAt: now,
           updatedAt: now,
@@ -852,7 +844,7 @@
 
     let regex;
     try {
-      regex = compilePattern(pattern, state.editingFlags);
+      regex = compilePattern(pattern);
     } catch (error) {
       box.dataset.state = "invalid";
       box.textContent = t("test.invalid") + error.message;

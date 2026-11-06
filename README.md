@@ -68,8 +68,7 @@ magpie plugin add ./magpie-prompt-protection
       "settings": {
         "action": "mask",
         "replacement": "[REDACTED_API_KEY]",
-        "scopes": ["system", "user"],
-        "flags": ""
+        "scopes": ["system", "user"]
       },
       "createdAt": "2026-11-06T12:00:00.000Z",
       "updatedAt": "2026-11-06T12:00:00.000Z"
@@ -87,7 +86,6 @@ magpie plugin add ./magpie-prompt-protection
 | `settings.action` | `mask` 或 `reject` |
 | `settings.replacement` | `mask` 时的替换文本，按字面量使用（不解析 `$1`） |
 | `settings.scopes` | 作用角色数组；空数组表示全部 |
-| `settings.flags` | 可选的 JS 正则标志：`i`、`m`、`s`、`u`；`g` 会自动加上 |
 | `status` | `enabled` 或 `disabled`；新建默认 `enabled` |
 | `rejectMessage` | 命中 `reject` 规则时返回给 Agent 的错误文本 |
 
