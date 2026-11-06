@@ -11,12 +11,12 @@
     replacement: "[MASKED]",
     scopes: ["user"],
   };
-  const PRESET_RULES_VERSION = 1;
+  const PRESET_RULES_VERSION = 2;
   const PRESET_RULES = [
     {
       id: "preset-jailbreak",
       name: "破限",
-      description: "预设规则",
+      description: "去除cc内置安全约束提示词",
       pattern: "IMPORTANT: Assist with authorized security testing.*?or defensive use cases.",
       status: "disabled",
       createdAt: "2026-11-06T00:00:00.000Z",
@@ -1267,12 +1267,20 @@
       state.optionsReady = true;
       state.rules = normalizeRules(state.options.rules);
       let seededPreset = false;
-      if (state.options.presetRulesVersion !== PRESET_RULES_VERSION) {
+      const presetVersion = Number(state.options.presetRulesVersion) || 0;
+      if (presetVersion !== PRESET_RULES_VERSION) {
         PRESET_RULES.forEach(function (preset) {
-          const exists = state.rules.some(function (rule) {
+          const existing = state.rules.find(function (rule) {
             return rule.id === preset.id || rule.name === preset.name;
           });
-          if (!exists) {
+          if (existing) {
+            if (existing.id === preset.id && existing.description === "预设规则") {
+              existing.description = preset.description;
+              existing.updatedAt = new Date().toISOString();
+            }
+            return;
+          }
+          if (presetVersion === 0) {
             const normalized = normalizeRule(preset);
             if (normalized) state.rules.push(normalized);
           }
