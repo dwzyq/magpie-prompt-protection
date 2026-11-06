@@ -11,7 +11,6 @@
     replacement: "[MASKED]",
     scopes: ["user"],
   };
-  const PRESET_RULES_VERSION = 2;
   const PRESET_RULES = [
     {
       id: "preset-jailbreak",
@@ -1304,27 +1303,16 @@
       state.options = options;
       state.optionsReady = true;
       state.rules = normalizeRules(state.options.rules);
-      let seededPreset = false;
-      const presetVersion = Number(state.options.presetRulesVersion) || 0;
-      if (presetVersion !== PRESET_RULES_VERSION) {
-        PRESET_RULES.forEach(function (preset) {
-          const exists = state.rules.some(function (rule) {
-            return rule.id === preset.id || rule.name === preset.name;
-          });
-          if (!exists && presetVersion === 0) {
-            const normalized = normalizeRule(preset);
-            if (normalized) state.rules.push(normalized);
-          }
-        });
-        state.options.presetRulesVersion = PRESET_RULES_VERSION;
-        seededPreset = true;
+      if (!Array.isArray(state.options.rules)) {
+        state.rules = normalizeRules(PRESET_RULES);
+        state.options.rules = state.rules;
+        scheduleSave();
       }
       state.rejectMessage =
         typeof state.options.rejectMessage === "string" && state.options.rejectMessage.trim()
           ? state.options.rejectMessage
           : DEFAULT_REJECT_MESSAGE;
       renderAll();
-      if (seededPreset) scheduleSave();
     }
   }
 
