@@ -816,7 +816,7 @@
     const test = $("field-test").value;
     const pattern = $("field-pattern").value;
 
-    if (!test || !pattern) {
+    if (!test) {
       block.hidden = true;
       box.dataset.state = "idle";
       box.textContent = "";
@@ -824,6 +824,12 @@
     }
 
     block.hidden = false;
+    if (!pattern) {
+      box.dataset.state = "idle";
+      box.textContent = t("test.noMatch");
+      return;
+    }
+
     let regex;
     try {
       regex = compilePattern(pattern, state.editingFlags);

@@ -1160,3 +1160,42 @@ input[type="checkbox"] {
   margin: 0 0 10px;
   font-size: 13px;
 }
+
+/* Full-height page: header and pagination stay put, the table scrolls. */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-head {
+  flex-shrink: 0;
+}
+
+.rules-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.toolbar {
+  flex-shrink: 0;
+}
+
+.table-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.pagination {
+  flex-shrink: 0;
+}
