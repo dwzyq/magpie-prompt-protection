@@ -1071,8 +1071,19 @@
       saveRule();
     });
     $("field-action").addEventListener("change", function () {
+      setFieldError("error-replacement", "");
       syncActionFields();
       schedulePreview();
+    });
+    [
+      ["field-name", "error-name"],
+      ["field-pattern", "error-pattern"],
+      ["field-replacement", "error-replacement"],
+    ].forEach(function (pair) {
+      $(pair[0]).addEventListener("input", function () {
+        setFieldError(pair[1], "");
+        $("form-error").hidden = true;
+      });
     });
     ["field-pattern", "field-replacement", "field-flags", "field-test"].forEach(function (id) {
       $(id).addEventListener("input", schedulePreview);
