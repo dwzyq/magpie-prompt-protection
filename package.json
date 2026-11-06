@@ -1,0 +1,55 @@
+{
+  "name": "magpie-prompt-protection",
+  "version": "0.1.0",
+  "description": "Magpie gateway middleware and management page: regex-based prompt protection with mask or reject actions and per-role scopes.",
+  "type": "module",
+  "files": [
+    "prompt-protection.middleware.js",
+    "page",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "magpie",
+    "magpie-plugin",
+    "magpie-middleware",
+    "prompt-protection",
+    "prompt-guard",
+    "guardrails",
+    "regex",
+    "llm-gateway"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dwzyq/magpie-prompt-protection.git"
+  },
+  "homepage": "https://github.com/dwzyq/magpie-prompt-protection",
+  "bugs": {
+    "url": "https://github.com/dwzyq/magpie-prompt-protection/issues"
+  },
+  "magpie": {
+    "name": "Prompt Protection",
+    "summary": {
+      "en": "Regex-based prompt protection for every request: mask sensitive content or reject the request, with per-role scopes and a visual rule manager.",
+      "zh": "对每个请求执行基于正则的提示保护：脱敏敏感内容或直接拒绝，支持按消息角色限定作用范围，并提供可视化管理页面。"
+    },
+    "middleware": "./prompt-protection.middleware.js",
+    "page": {
+      "title": "Prompt Protection",
+      "titles": {
+        "zh": "提示保护",
+        "zh-TW": "提示保護",
+        "ja": "プロンプト保護",
+        "de": "Prompt-Schutz"
+      },
+      "file": "page/index.html",
+      "icon": "page/icon.svg"
+    },
+    "options": {
+      "rules": [],
+      "rejectMessage": "request blocked by prompt protection policy"
+    },
+    "icon": "page/icon.svg"
+  }
+}
