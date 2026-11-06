@@ -1270,17 +1270,10 @@
       const presetVersion = Number(state.options.presetRulesVersion) || 0;
       if (presetVersion !== PRESET_RULES_VERSION) {
         PRESET_RULES.forEach(function (preset) {
-          const existing = state.rules.find(function (rule) {
+          const exists = state.rules.some(function (rule) {
             return rule.id === preset.id || rule.name === preset.name;
           });
-          if (existing) {
-            if (existing.id === preset.id && existing.description === "预设规则") {
-              existing.description = preset.description;
-              existing.updatedAt = new Date().toISOString();
-            }
-            return;
-          }
-          if (presetVersion === 0) {
+          if (!exists && presetVersion === 0) {
             const normalized = normalizeRule(preset);
             if (normalized) state.rules.push(normalized);
           }
