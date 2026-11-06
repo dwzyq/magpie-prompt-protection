@@ -3,20 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>提示保护规则 · Magpie</title>
+  <title>提示保护 · Magpie</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=0.2.2">
+  <link rel="stylesheet" href="style.css?v=0.2.3">
   <script src="_magpie/bridge.js" defer></script>
-  <script src="app.js?v=0.2.2" defer></script>
+  <script src="app.js?v=0.2.3" defer></script>
 </head>
 <body>
   <main class="shell">
     <header class="page-head">
       <div class="head-copy">
-        <h1 data-i18n="app.title">提示保护规则</h1>
-        <p data-i18n="app.subtitle">管理基于正则的提示保护规则，可对命中内容做脱敏或直接拒绝。</p>
+        <div class="eyebrow" data-i18n="app.eyebrow">MAGPIE · 网关中间件</div>
+        <h1 data-i18n="app.title">提示保护</h1>
+        <p data-i18n="app.subtitle">在请求发往模型之前，用正则规则对提示内容进行脱敏或拒绝。</p>
       </div>
       <div class="head-actions">
+        <span id="save-state" class="save-state" role="status" data-state="loading" data-i18n="app.loading">正在加载…</span>
         <button id="create-rule" class="btn btn-primary" type="button">
           <span class="btn-plus" aria-hidden="true">+</span>
           <span data-i18n="app.create">创建规则</span>
@@ -24,103 +26,117 @@
       </div>
     </header>
 
+    <section class="stats" aria-label="Rules overview">
+      <article class="stat-card">
+        <span class="stat-label" data-i18n="stats.total">规则总数</span>
+        <strong id="stat-total" class="stat-value">0</strong>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label" data-i18n="stats.enabled">已启用</span>
+        <strong id="stat-enabled" class="stat-value stat-good">0</strong>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label" data-i18n="stats.reject">拒绝规则</span>
+        <strong id="stat-reject" class="stat-value stat-danger">0</strong>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label" data-i18n="stats.disabled">已禁用</span>
+        <strong id="stat-disabled" class="stat-value">0</strong>
+      </article>
+    </section>
+
     <section class="panel rules-panel">
       <div class="toolbar">
         <label class="search-box">
           <span class="search-icon" aria-hidden="true">
             <svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.2"/><path d="m12.4 12.4 4 4"/></svg>
           </span>
-          <input id="search" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="search.placeholder" placeholder="按名称筛选...">
+          <input id="search" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="search.placeholder" placeholder="按名称筛选…">
         </label>
+        <select id="status-filter" class="select select-compact" aria-label="Status filter">
+          <option value="all" data-i18n="filter.all">全部状态</option>
+          <option value="enabled" data-i18n="filter.enabled">已启用</option>
+          <option value="disabled" data-i18n="filter.disabled">已禁用</option>
+        </select>
+        <div class="toolbar-spacer"></div>
+        <div id="bulk-actions" class="bulk-actions" hidden>
+          <span id="bulk-count" class="bulk-count"></span>
+          <button id="bulk-enable" class="btn btn-quiet" type="button" data-i18n="bulk.enable">批量启用</button>
+          <button id="bulk-disable" class="btn btn-quiet" type="button" data-i18n="bulk.disable">批量禁用</button>
+          <button id="bulk-delete" class="btn btn-quiet btn-danger-text" type="button" data-i18n="bulk.delete">批量删除</button>
+        </div>
       </div>
 
       <div class="table-wrap">
         <table class="rules-table">
           <thead>
             <tr>
-              <th class="col-select"><input id="select-all" type="checkbox" aria-label="全选"></th>
+              <th class="col-select"><input id="select-all" type="checkbox" aria-label="Select all"></th>
               <th class="col-name"><button class="th-sort" type="button" data-sort="name"><span data-i18n="table.name">名称</span><span class="sort-mark" aria-hidden="true"></span></button></th>
-              <th class="col-description"><span data-i18n="table.description">描述</span></th>
-              <th class="col-pattern"><span data-i18n="table.pattern">匹配规则</span></th>
+              <th class="col-pattern"><span data-i18n="table.pattern">正则表达式</span></th>
               <th class="col-action"><span data-i18n="table.action">处理方式</span></th>
               <th class="col-scopes"><span data-i18n="table.scopes">作用范围</span></th>
               <th class="col-status"><span data-i18n="table.status">状态</span></th>
-              <th class="col-created"><button class="th-sort" type="button" data-sort="createdAt"><span data-i18n="table.created">创建时间</span><span class="sort-mark" aria-hidden="true"></span></button></th>
+              <th class="col-updated"><button class="th-sort" type="button" data-sort="updatedAt"><span data-i18n="table.updated">更新时间</span><span class="sort-mark" aria-hidden="true"></span></button></th>
               <th class="col-actions"><span data-i18n="table.actions">操作</span></th>
             </tr>
           </thead>
           <tbody id="rules-body"></tbody>
         </table>
+        <div id="empty-state" class="empty-state" hidden>
+          <div class="empty-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" width="44" height="44" fill="none"><path d="M32 8 51 15v14c0 11.6-7.5 20.4-19 24-11.5-3.6-19-12.4-19-24V15l19-7Z" stroke="currentColor" stroke-width="3" stroke-linejoin="round" opacity=".5"/><path d="M24 31h16M28 24v14M36 24v14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity=".55"/></svg>
+          </div>
+          <h2 data-i18n="empty.title">还没有提示保护规则</h2>
+          <p data-i18n="empty.hint">创建第一条规则，命中的内容会被脱敏或拒绝。</p>
+          <button id="empty-create" class="btn btn-primary" type="button" data-i18n="app.create">创建规则</button>
+        </div>
       </div>
 
       <footer class="pagination">
-        <span id="selection-info" class="page-total"></span>
+        <span id="page-total" class="page-total"></span>
         <div class="pagination-controls">
           <label class="page-size-label">
-            <span data-i18n="page.size">每页行数</span>
+            <span data-i18n="page.size">每页</span>
             <select id="page-size" class="select select-mini">
               <option value="10">10</option>
               <option value="20" selected>20</option>
-              <option value="30">30</option>
-              <option value="40">40</option>
               <option value="50">50</option>
               <option value="100">100</option>
             </select>
           </label>
-          <button id="page-prev" class="btn btn-quiet btn-icon" type="button" data-i18n-title="page.prev" title="上一页" aria-label="上一页">
-            <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12.5 4.5-5 5.5 5 5.5"/></svg>
-          </button>
-          <button id="page-next" class="btn btn-quiet btn-icon" type="button" data-i18n-title="page.next" title="下一页" aria-label="下一页">
-            <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.5 5 5.5-5 5.5"/></svg>
-          </button>
+          <button id="page-prev" class="btn btn-quiet" type="button" data-i18n="page.prev">上一页</button>
+          <span id="page-info" class="page-info"></span>
+          <button id="page-next" class="btn btn-quiet" type="button" data-i18n="page.next">下一页</button>
         </div>
       </footer>
     </section>
+
   </main>
-
-  <div id="bulk-actions" class="bulk-bar" hidden>
-    <button id="bulk-clear" class="bulk-icon" type="button" data-i18n-title="bulk.clear" title="取消选择" aria-label="取消选择">
-      <svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m5 5 10 10M15 5 5 15"/></svg>
-    </button>
-    <span class="bulk-divider"></span>
-    <span id="bulk-count" class="bulk-count"></span>
-    <span class="bulk-divider"></span>
-    <button id="bulk-enable" class="bulk-icon bulk-enable" type="button" data-i18n-title="bulk.enable" title="启用" aria-label="启用">
-      <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-9"/></svg>
-    </button>
-    <button id="bulk-disable" class="bulk-icon bulk-disable" type="button" data-i18n-title="bulk.disable" title="禁用" aria-label="禁用">
-      <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"/><path d="m5.5 5.5 9 9"/></svg>
-    </button>
-    <button id="bulk-delete" class="bulk-icon bulk-delete" type="button" data-i18n-title="bulk.delete" title="删除" aria-label="删除">
-      <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h12M7 6V4h6v2M6 6l.7 10h6.6L14 6"/></svg>
-    </button>
-  </div>
-
-  <div id="row-menu" class="row-menu" hidden></div>
-  <div id="toast" class="toast" role="status" hidden></div>
 
   <div id="rule-modal" class="modal-backdrop" hidden>
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="rule-modal-title">
       <header class="modal-head">
         <div>
           <h2 id="rule-modal-title">创建提示保护规则</h2>
-          <p id="rule-modal-subtitle" class="modal-subtitle" data-i18n="dialog.createDescription">配置正则匹配规则，并选择命中后脱敏还是直接拒绝。</p>
+          <p id="rule-modal-subtitle" class="modal-subtitle" data-i18n="dialog.subtitle">配置正则、处理方式与作用范围。</p>
         </div>
         <button id="rule-close" class="icon-btn" type="button" aria-label="Close">&#10005;</button>
       </header>
 
       <form id="rule-form" class="rule-form" novalidate>
         <input id="field-id" type="hidden">
-        <label class="field">
-          <span class="field-label" data-i18n="field.name">名称</span>
-          <input id="field-name" maxlength="120" autocomplete="off" spellcheck="false" required>
-          <small class="field-error" id="error-name" hidden></small>
-        </label>
-
-        <label class="field">
-          <span class="field-label" data-i18n="field.description">描述</span>
-          <input id="field-description" maxlength="500" autocomplete="off">
-        </label>
+        <div class="form-grid">
+          <label class="field">
+            <span class="field-label" data-i18n="field.name">名称</span>
+            <input id="field-name" maxlength="120" autocomplete="off" spellcheck="false" required>
+            <small class="field-error" id="error-name" hidden></small>
+          </label>
+          <label class="field">
+            <span class="field-label" data-i18n="field.description">描述</span>
+            <input id="field-description" maxlength="500" autocomplete="off">
+          </label>
+        </div>
 
         <label class="field">
           <span class="field-label" data-i18n="field.pattern">正则表达式</span>
@@ -128,7 +144,7 @@
           <small class="field-error" id="error-pattern" hidden></small>
         </label>
 
-        <div class="form-grid">
+        <div class="form-grid form-grid-3">
           <label class="field">
             <span class="field-label" data-i18n="field.action">处理方式</span>
             <select id="field-action" class="select">
@@ -141,6 +157,10 @@
             <input id="field-replacement" maxlength="200" autocomplete="off">
             <small class="field-error" id="error-replacement" hidden></small>
           </label>
+          <label class="field">
+            <span class="field-label" data-i18n="field.flags">正则标志（可选）</span>
+            <input id="field-flags" maxlength="6" autocomplete="off" spellcheck="false" data-i18n-placeholder="field.flagsPlaceholder" placeholder="例如 i、m、s">
+          </label>
         </div>
 
         <fieldset class="scopes-field">
@@ -152,17 +172,20 @@
             <label class="scope-option"><input type="checkbox" value="assistant"><span data-i18n="scope.assistant">助手</span></label>
             <label class="scope-option"><input type="checkbox" value="tool"><span data-i18n="scope.tool">工具</span></label>
           </div>
+          <small class="field-help" data-i18n="field.scopesHelp">不选择任何范围时，规则对所有消息角色生效。</small>
         </fieldset>
 
         <section class="preview-box">
-          <h3 data-i18n="test.title">测试预览</h3>
+          <div class="preview-head">
+            <h3 data-i18n="test.title">测试预览</h3>
+            <span class="preview-hint" data-i18n="test.hint">在本地实时匹配，不会发送测试文本。</span>
+          </div>
           <label class="field">
             <span class="field-label" data-i18n="test.input">测试文本</span>
-            <textarea id="field-test" rows="3" spellcheck="false" data-i18n-placeholder="test.placeholder" placeholder="输入测试文本以预览正则替换效果"></textarea>
+            <textarea id="field-test" rows="3" spellcheck="false" data-i18n-placeholder="test.placeholder" placeholder="输入一段文本，实时查看正则匹配效果"></textarea>
           </label>
-          <div id="preview-block" class="preview-block" hidden>
-            <span class="field-label" data-i18n="test.result">预览结果</span>
-            <div id="preview-result" class="preview-result" data-state="idle"></div>
+          <div id="preview-result" class="preview-result" data-state="idle">
+            <span data-i18n="test.idle">输入测试文本后显示预览</span>
           </div>
         </section>
 
@@ -179,12 +202,12 @@
   <div id="confirm-modal" class="modal-backdrop" hidden>
     <section class="modal modal-small" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title">
       <header class="modal-head">
-        <h2 id="confirm-title">更新规则状态</h2>
+        <h2 id="confirm-title">删除提示保护规则</h2>
       </header>
       <p id="confirm-description" class="confirm-description"></p>
       <footer class="modal-actions">
         <button id="confirm-cancel" class="btn btn-quiet" type="button" data-i18n="dialog.cancel">取消</button>
-        <button id="confirm-action" class="btn btn-primary" type="button" data-i18n="dialog.confirm">确认</button>
+        <button id="confirm-delete" class="btn btn-danger" type="button" data-i18n="delete.confirm">删除</button>
       </footer>
     </section>
   </div>
