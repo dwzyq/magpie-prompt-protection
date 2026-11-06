@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>提示保护规则 · Magpie</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=0.3.1">
+  <link rel="stylesheet" href="style.css?v=0.3.2">
   <script src="_magpie/bridge.js" defer></script>
-  <script src="app.js?v=0.3.1" defer></script>
+  <script src="app.js?v=0.3.2" defer></script>
 </head>
 <body>
   <main class="shell">
@@ -128,7 +128,7 @@
           <small class="field-error" id="error-pattern" hidden></small>
         </label>
 
-        <div class="form-grid form-grid-3">
+        <div class="form-grid">
           <label class="field">
             <span class="field-label" data-i18n="field.action">处理方式</span>
             <select id="field-action" class="select">
@@ -140,10 +140,6 @@
             <span class="field-label" data-i18n="field.replacement">替换文本</span>
             <input id="field-replacement" maxlength="200" autocomplete="off">
             <small class="field-error" id="error-replacement" hidden></small>
-          </label>
-          <label class="field">
-            <span class="field-label" data-i18n="field.flags">正则标志（可选）</span>
-            <input id="field-flags" maxlength="6" autocomplete="off" spellcheck="false" data-i18n-placeholder="field.flagsPlaceholder" placeholder="例如 i、m、s">
           </label>
         </div>
 

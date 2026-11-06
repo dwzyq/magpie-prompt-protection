@@ -9,7 +9,6 @@
     pattern: "",
     action: "mask",
     replacement: "[MASKED]",
-    flags: "",
     scopes: ["user"],
   };
   const PRESET_RULES_VERSION = 2;
@@ -86,8 +85,6 @@
       "field.pattern": "正则表达式",
       "field.action": "处理方式",
       "field.replacement": "替换文本",
-      "field.flags": "正则标志（可选）",
-      "field.flagsPlaceholder": "例如 i、m、s",
       "field.scopes": "作用范围",
       "test.title": "测试预览",
       "test.input": "测试文本",
@@ -174,8 +171,6 @@
       "field.pattern": "Pattern",
       "field.action": "Action",
       "field.replacement": "Replacement",
-      "field.flags": "Regex flags (optional)",
-      "field.flagsPlaceholder": "e.g. i, m, s",
       "field.scopes": "Scopes",
       "test.title": "Test Preview",
       "test.input": "Test Input",
@@ -224,6 +219,7 @@
     selected: {},
     visibleIds: [],
     editingId: null,
+    editingFlags: "",
     pendingConfirm: null,
     pendingToast: null,
     saveTimer: null,
@@ -662,6 +658,7 @@
   function openRuleModal(id) {
     state.editingId = id || null;
     const rule = id ? findRule(id) : null;
+    state.editingFlags = rule ? rule.settings.flags || "" : "";
     const values = rule
       ? {
           name: rule.name,
@@ -669,7 +666,6 @@
           pattern: rule.pattern,
           action: rule.settings.action,
           replacement: rule.settings.replacement,
-          flags: rule.settings.flags,
           scopes: rule.settings.scopes.slice(),
         }
       : {
@@ -678,7 +674,6 @@
           pattern: DEFAULT_RULE.pattern,
           action: DEFAULT_RULE.action,
           replacement: DEFAULT_RULE.replacement,
-          flags: DEFAULT_RULE.flags,
           scopes: DEFAULT_RULE.scopes.slice(),
         };
 
@@ -688,7 +683,6 @@
     $("field-pattern").value = values.pattern;
     $("field-action").value = values.action;
     $("field-replacement").value = values.replacement;
-    $("field-flags").value = values.flags;
     $("field-test").value = "";
     document.querySelectorAll(".scope-option input").forEach(function (input) {
       input.checked = values.scopes.indexOf(input.value) >= 0;
@@ -708,6 +702,7 @@
   function closeRuleModal() {
     $("rule-modal").hidden = true;
     state.editingId = null;
+    state.editingFlags = "";
     previewTimer = null;
   }
 
@@ -741,7 +736,7 @@
       pattern: $("field-pattern").value,
       action: $("field-action").value === "reject" ? "reject" : "mask",
       replacement: $("field-replacement").value,
-      flags: sanitizeFlags($("field-flags").value),
+      flags: state.editingFlags,
       scopes: scopes,
     };
   }
@@ -857,7 +852,7 @@
 
     let regex;
     try {
-      regex = compilePattern(pattern, $("field-flags").value);
+      regex = compilePattern(pattern, state.editingFlags);
     } catch (error) {
       box.dataset.state = "invalid";
       box.textContent = t("test.invalid") + error.message;
@@ -1196,7 +1191,7 @@
     }
     $("rule-form").addEventListener("input", clearFieldErrorOnEdit);
     $("rule-form").addEventListener("change", clearFieldErrorOnEdit);
-    ["field-pattern", "field-replacement", "field-flags", "field-test"].forEach(function (id) {
+    ["field-pattern", "field-replacement", "field-test"].forEach(function (id) {
       $(id).addEventListener("input", schedulePreview);
     });
     document.querySelectorAll(".scope-option input").forEach(function (input) {
