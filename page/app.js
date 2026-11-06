@@ -1061,7 +1061,15 @@
 
     $("rule-close").addEventListener("click", closeRuleModal);
     $("rule-cancel").addEventListener("click", closeRuleModal);
+    $("rule-submit").addEventListener("click", function () {
+      saveRule();
+    });
     $("rule-form").addEventListener("submit", saveRule);
+    $("rule-form").addEventListener("keydown", function (event) {
+      if (event.key !== "Enter" || event.target.tagName === "TEXTAREA") return;
+      event.preventDefault();
+      saveRule();
+    });
     $("field-action").addEventListener("change", function () {
       syncActionFields();
       schedulePreview();
