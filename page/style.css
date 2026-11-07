@@ -758,9 +758,10 @@ input[type="checkbox"] {
 .preview-result {
   min-height: 38px;
   margin-top: 10px;
-  padding: 0;
-  border: 0;
-  background: transparent;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--card);
   color: var(--muted);
   font-size: 12.5px;
   line-height: 1.55;
@@ -769,24 +770,22 @@ input[type="checkbox"] {
   font-family: inherit;
 }
 
-.preview-box[data-state="match"] {
+.preview-result[data-state="match"] {
   border-color: var(--success);
   background: var(--success-soft);
-}
-
-.preview-box[data-state="reject"],
-.preview-box[data-state="invalid"] {
-  border-color: var(--danger);
-  background: var(--danger-soft);
-}
-
-.preview-result[data-state="match"] {
   color: var(--fg);
 }
 
 .preview-result[data-state="reject"],
 .preview-result[data-state="invalid"] {
+  border-color: var(--danger);
+  background: var(--danger-soft);
   color: var(--danger);
+}
+
+.preview-result[data-state="no-match"] {
+  border-style: dashed;
+  background: var(--card-soft);
 }
 
 .preview-result::-webkit-scrollbar {

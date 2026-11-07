@@ -843,8 +843,6 @@
 
   function setPreviewState(box, state) {
     box.dataset.state = state;
-    const panel = box.closest(".preview-box");
-    if (panel) panel.dataset.state = state;
   }
 
   function updatePreview() {
