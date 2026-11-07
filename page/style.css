@@ -1011,14 +1011,33 @@ input[type="checkbox"] {
   color: var(--fg);
 }
 
+.bulk-enable {
+  color: var(--success);
+  background: var(--success-soft);
+}
+
 .bulk-enable:hover {
   color: var(--success);
   background: var(--success-soft);
 }
 
+.bulk-disable {
+  color: #b54708;
+  background: var(--warning-soft);
+}
+
 .bulk-disable:hover {
   color: #b54708;
   background: var(--warning-soft);
+}
+
+html[data-theme="dark"] .bulk-disable {
+  color: #fec84b;
+}
+
+.bulk-delete {
+  color: var(--danger);
+  background: var(--danger-soft);
 }
 
 .bulk-delete:hover {
