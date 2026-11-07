@@ -841,19 +841,25 @@
     previewTimer = window.setTimeout(updatePreview, 250);
   }
 
+  function setPreviewState(box, state) {
+    box.dataset.state = state;
+    const panel = box.closest(".preview-box");
+    if (panel) panel.dataset.state = state;
+  }
+
   function updatePreview() {
     const box = $("preview-result");
     const test = $("field-test").value;
     const pattern = $("field-pattern").value;
 
     if (!test) {
-      box.dataset.state = "idle";
+      setPreviewState(box, "idle");
       box.textContent = t("test.idle");
       return;
     }
 
     if (!pattern) {
-      box.dataset.state = "no-match";
+      setPreviewState(box, "no-match");
       box.textContent = t("test.noMatch");
       return;
     }
@@ -862,32 +868,30 @@
     try {
       regex = compilePattern(pattern);
     } catch (error) {
-      box.dataset.state = "invalid";
+      setPreviewState(box, "invalid");
       box.textContent = t("test.invalid") + error.message;
       return;
     }
 
     regex.lastIndex = 0;
     if (!regex.test(test)) {
-      box.dataset.state = "no-match";
+      setPreviewState(box, "no-match");
       box.textContent = t("test.noMatch");
       return;
     }
 
     const action = $("field-action").value;
     if (action === "reject") {
-      box.dataset.state = "reject";
-      box.replaceChildren();
-      box.appendChild(el("div", "preview-status", t("test.rejected")));
+      setPreviewState(box, "reject");
+      box.textContent = t("test.rejected");
       return;
     }
 
     regex.lastIndex = 0;
     const replacement = $("field-replacement").value || "[MASKED]";
     const result = test.replace(regex, replacementTemplate(replacement));
-    box.dataset.state = "match";
-    box.replaceChildren();
-    box.appendChild(el("pre", null, result));
+    setPreviewState(box, "match");
+    box.textContent = result;
   }
 
   function openConfirm(options) {
