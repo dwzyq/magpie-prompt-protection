@@ -559,7 +559,7 @@
     const scopeNames = scopes.length
       ? scopes.map(function (scope) { return t("scope." + scope); }).join("、")
       : t("scope.all");
-    const scopeText = el("span", "scope-code" + (scopes.length <= 1 ? " scope-code-single" : ""), scopeNames);
+    const scopeText = el("span", "scope-code", scopeNames);
     scopeText.title = scopeNames;
     scopesCell.appendChild(scopeText);
     row.appendChild(scopesCell);
