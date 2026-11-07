@@ -715,6 +715,10 @@ input[type="checkbox"] {
   gap: 14px;
 }
 
+.form-grid.form-grid-actions {
+  grid-template-columns: 84px minmax(0, 1fr);
+}
+
 .form-grid-3 {
   grid-template-columns: 1fr 1.25fr 0.75fr;
 }
@@ -842,6 +846,10 @@ input[type="checkbox"] {
   .form-grid,
   .form-grid-3,
   .scope-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid.form-grid-actions {
     grid-template-columns: 1fr;
   }
 
