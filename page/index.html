@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>提示保护规则 · Magpie</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=0.3.28">
+  <link rel="stylesheet" href="style.css?v=0.3.29">
   <script src="_magpie/bridge.js" defer></script>
-  <script src="app.js?v=0.3.28" defer></script>
+  <script src="app.js?v=0.3.29" defer></script>
 </head>
 <body>
   <main class="shell">
@@ -85,15 +85,9 @@
     <span class="bulk-divider"></span>
     <span id="bulk-count" class="bulk-count"></span>
     <span class="bulk-divider"></span>
-    <button id="bulk-enable" class="bulk-icon bulk-enable" type="button" data-i18n-title="bulk.enable" title="启用" aria-label="启用">
-      <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-9"/></svg>
-    </button>
-    <button id="bulk-disable" class="bulk-icon bulk-disable" type="button" data-i18n-title="bulk.disable" title="禁用" aria-label="禁用">
-      <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"/><path d="m5.5 5.5 9 9"/></svg>
-    </button>
-    <button id="bulk-delete" class="bulk-icon bulk-delete" type="button" data-i18n-title="bulk.delete" title="删除" aria-label="删除">
-      <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h12M7 6V4h6v2M6 6l.7 10h6.6L14 6"/></svg>
-    </button>
+    <button id="bulk-enable" class="bulk-action bulk-enable" type="button" data-i18n="bulk.enable">启用</button>
+    <button id="bulk-disable" class="bulk-action bulk-disable" type="button" data-i18n="bulk.disable">禁用</button>
+    <button id="bulk-delete" class="bulk-action bulk-delete" type="button" data-i18n="bulk.delete">删除</button>
   </div>
 
   <div id="row-menu" class="row-menu" hidden></div>

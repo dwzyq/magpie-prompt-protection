@@ -994,6 +994,23 @@ input[type="checkbox"] {
   color: var(--fg);
 }
 
+.bulk-action {
+  height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bulk-action:hover {
+  background: var(--card-soft);
+  color: var(--fg);
+}
+
 .bulk-enable:hover {
   color: var(--success);
   background: var(--success-soft);
