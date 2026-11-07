@@ -617,7 +617,7 @@ input[type="checkbox"] {
 }
 
 .field textarea {
-  resize: vertical;
+  resize: none;
 }
 
 .field input:disabled {
