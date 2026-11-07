@@ -1,6 +1,6 @@
 {
   "name": "magpie-prompt-protection",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Magpie gateway middleware and management page: regex-based prompt protection with mask or reject actions and per-role scopes.",
   "type": "module",
   "files": [

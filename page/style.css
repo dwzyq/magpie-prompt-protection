@@ -1061,6 +1061,7 @@ input[type="checkbox"] {
   gap: 12px;
   padding: 14px 24px 18px;
   overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 #rule-modal .scope-option {
@@ -1075,12 +1076,13 @@ input[type="checkbox"] {
 }
 
 #rule-modal .preview-box .field {
-  flex: 1;
+  flex: 0 0 auto;
   min-height: 0;
 }
 
 #rule-modal .preview-box textarea {
-  flex: 1;
+  flex: none;
+  height: 84px;
   min-height: 63px;
 }
 
