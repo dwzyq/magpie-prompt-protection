@@ -715,8 +715,19 @@ input[type="checkbox"] {
   gap: 14px;
 }
 
-.form-grid.form-grid-actions {
-  grid-template-columns: 84px minmax(0, 1fr);
+#rule-modal .form-grid.form-grid-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+#rule-modal .form-grid.form-grid-actions .field:first-child {
+  flex: 0 0 72px;
+}
+
+#rule-modal .form-grid.form-grid-actions .field:last-child {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .form-grid-3 {
@@ -849,8 +860,13 @@ input[type="checkbox"] {
     grid-template-columns: 1fr;
   }
 
-  .form-grid.form-grid-actions {
-    grid-template-columns: 1fr;
+  #rule-modal .form-grid.form-grid-actions {
+    flex-direction: column;
+  }
+
+  #rule-modal .form-grid.form-grid-actions .field {
+    flex: 0 0 auto;
+    width: 100%;
   }
 
   .pagination {
