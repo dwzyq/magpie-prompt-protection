@@ -44,6 +44,16 @@ html[data-theme="dark"] {
   display: none !important;
 }
 
+label {
+  pointer-events: none;
+}
+
+label input,
+label select,
+label textarea {
+  pointer-events: auto;
+}
+
 html,
 body {
   margin: 0;
