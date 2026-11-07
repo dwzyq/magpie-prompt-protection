@@ -849,6 +849,7 @@
     const box = $("preview-result");
     const test = $("field-test").value;
     const pattern = $("field-pattern").value;
+    box.title = "";
 
     if (!test) {
       setPreviewState(box, "idle");
@@ -890,6 +891,7 @@
     const result = test.replace(regex, replacementTemplate(replacement));
     setPreviewState(box, "match");
     box.textContent = result;
+    box.title = result;
   }
 
   function openConfirm(options) {
