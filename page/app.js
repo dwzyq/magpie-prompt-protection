@@ -556,11 +556,12 @@
 
     const scopesCell = el("td", "col-scopes");
     const scopes = rule.settings.scopes || [];
-    const scopesBadge = el("span", "badge badge-outline", String(scopes.length));
-    scopesBadge.title = scopes.length
+    const scopeNames = scopes.length
       ? scopes.map(function (scope) { return t("scope." + scope); }).join("、")
       : t("scope.all");
-    scopesCell.appendChild(scopesBadge);
+    const scopeText = el("span", "scope-code", scopeNames);
+    scopeText.title = scopeNames;
+    scopesCell.appendChild(scopeText);
     row.appendChild(scopesCell);
 
     const statusCell = el("td", "col-status");

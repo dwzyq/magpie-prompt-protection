@@ -422,6 +422,20 @@ input[type="checkbox"] {
   white-space: nowrap;
 }
 
+.scope-code {
+  display: block;
+  max-width: 160px;
+  overflow: hidden;
+  padding: 4px 7px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--card-soft);
+  color: var(--muted);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -897,10 +911,6 @@ input[type="checkbox"] {
   border: 1px solid var(--border);
   background: var(--card-soft);
   color: var(--muted);
-}
-
-.col-scopes .badge-outline {
-  cursor: help;
 }
 
 .empty-row td {
