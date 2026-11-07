@@ -212,7 +212,7 @@
     rejectMessage: DEFAULT_REJECT_MESSAGE,
     search: "",
     sortField: "createdAt",
-    sortDesc: true,
+    sortDesc: false,
     page: 1,
     pageSize: 20,
     pageRuleCount: 0,
