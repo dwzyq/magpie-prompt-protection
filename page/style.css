@@ -789,7 +789,7 @@ input[type="checkbox"] {
 
 .preview-result[data-state="match"] {
   border-color: var(--success);
-  color: var(--success);
+  color: var(--fg);
   background: var(--success-soft);
 }
 
@@ -813,7 +813,7 @@ input[type="checkbox"] {
 .preview-result pre {
   flex: 0 0 auto;
   margin: 0;
-  color: var(--fg);
+  color: inherit;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
