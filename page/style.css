@@ -1083,7 +1083,7 @@ input[type="checkbox"] {
 }
 
 #rule-modal .preview-box .field {
-  flex: 6 1 0;
+  flex: 1 1 0;
   min-height: 0;
 }
 
@@ -1094,12 +1094,12 @@ input[type="checkbox"] {
 }
 
 #rule-modal .preview-block {
-  flex: 4 1 0;
+  flex: 0 0 auto;
   min-height: 0;
 }
 
 #rule-modal .preview-result {
-  flex: 1;
+  flex: none;
   min-height: 0;
   max-height: none;
   overflow-y: hidden;
