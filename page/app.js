@@ -90,7 +90,6 @@
       "test.placeholder": "输入测试文本以预览正则替换效果",
       "test.idle": "输入测试文本后显示预览结果",
       "test.noMatch": "无匹配",
-      "test.matched": "已匹配，预览脱敏结果",
       "test.rejected": "命中拒绝规则，请求将被拦截",
       "test.invalid": "无效的正则表达式：",
       "validation.nameRequired": "请输入名称",
@@ -178,7 +177,6 @@
       "test.placeholder": "Enter test text to preview regex replacement",
       "test.idle": "Enter test text to see the preview result",
       "test.noMatch": "No match",
-      "test.matched": "Match found. Masked preview:",
       "test.rejected": "Reject rule matched. The request will be blocked.",
       "test.invalid": "Invalid regex pattern: ",
       "validation.nameRequired": "Name is required",
@@ -889,7 +887,6 @@
     const result = test.replace(regex, replacementTemplate(replacement));
     box.dataset.state = "match";
     box.replaceChildren();
-    box.appendChild(el("div", "preview-status", t("test.matched")));
     box.appendChild(el("pre", null, result));
   }
 

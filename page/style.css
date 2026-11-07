@@ -813,10 +813,6 @@ input[type="checkbox"] {
 .preview-result pre {
   flex: 0 0 auto;
   margin: 0;
-  padding: 8px 10px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: var(--card);
   color: var(--fg);
   overflow-wrap: anywhere;
   white-space: pre-wrap;
