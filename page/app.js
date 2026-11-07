@@ -1210,14 +1210,6 @@
     $("confirm-cancel").addEventListener("click", closeConfirm);
     $("confirm-action").addEventListener("click", runConfirm);
 
-    [$("rule-modal"), $("confirm-modal")].forEach(function (backdrop) {
-      backdrop.addEventListener("click", function (event) {
-        if (event.target !== backdrop) return;
-        if (backdrop === $("rule-modal")) closeRuleModal();
-        else closeConfirm();
-      });
-    });
-
     document.addEventListener("click", function (event) {
       if (!event.target.closest || !event.target.closest("#row-menu")) closeRowMenu();
     });
