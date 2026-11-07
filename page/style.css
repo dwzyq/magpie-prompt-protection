@@ -1082,14 +1082,17 @@ input[type="checkbox"] {
 
 #rule-modal .preview-box textarea {
   flex: none;
+  height: 84px;
   min-height: 63px;
 }
 
 #rule-modal .preview-block {
-  flex-shrink: 0;
+  flex: 1;
+  min-height: 0;
 }
 
 #rule-modal .preview-result {
+  flex: 1;
   max-height: 28vh;
   overflow-y: auto;
 }
@@ -1238,11 +1241,13 @@ input[type="checkbox"] {
   }
 
   #rule-modal .preview-block {
+    flex: 0 0 auto;
     margin-top: 10px;
     gap: 8px;
   }
 
   #rule-modal .preview-result {
+    flex: none;
     max-height: none;
     overflow: visible;
     margin-top: 8px;
