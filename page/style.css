@@ -412,10 +412,6 @@ input[type="checkbox"] {
   display: block;
   max-width: 360px;
   overflow: hidden;
-  padding: 4px 7px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: var(--card-soft);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 12px;
   text-overflow: ellipsis;
