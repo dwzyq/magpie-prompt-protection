@@ -1082,7 +1082,6 @@ input[type="checkbox"] {
 
 #rule-modal .preview-box textarea {
   flex: none;
-  height: 84px;
   min-height: 63px;
 }
 
@@ -1142,11 +1141,6 @@ input[type="checkbox"] {
   #rule-modal .preview-box h3 {
     margin-bottom: 4px;
     font-size: 12px;
-  }
-
-  #rule-modal .preview-box textarea {
-    height: 42px;
-    min-height: 42px;
   }
 
   #rule-modal .preview-block {
