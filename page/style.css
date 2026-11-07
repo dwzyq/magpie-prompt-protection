@@ -765,9 +765,8 @@ input[type="checkbox"] {
   color: var(--muted);
   font-size: 12.5px;
   line-height: 1.55;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
   font-family: inherit;
 }
 
@@ -1073,7 +1072,7 @@ input[type="checkbox"] {
 }
 
 #rule-modal .preview-box .field {
-  flex: 1 1 0;
+  flex: 6 1 0;
   min-height: 0;
 }
 
@@ -1084,15 +1083,15 @@ input[type="checkbox"] {
 }
 
 #rule-modal .preview-block {
-  flex: 0 0 auto;
+  flex: 4 1 0;
   min-height: 0;
 }
 
 #rule-modal .preview-result {
-  flex: none;
+  flex: 1;
   min-height: 0;
   max-height: none;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 @media (min-width: 561px) and (max-height: 900px) {
@@ -1246,7 +1245,7 @@ input[type="checkbox"] {
   #rule-modal .preview-result {
     flex: none;
     max-height: none;
-    overflow: hidden;
+    overflow: visible;
     margin-top: 8px;
     font-size: 13px;
   }
