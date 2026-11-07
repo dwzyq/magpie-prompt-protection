@@ -65,6 +65,7 @@
       "scope.user": "用户",
       "scope.assistant": "助手",
       "scope.tool": "工具",
+      "scope.all": "全部角色",
       "page.size": "每页行数",
       "page.prev": "上一页",
       "page.next": "下一页",
@@ -152,6 +153,7 @@
       "scope.user": "User",
       "scope.assistant": "Assistant",
       "scope.tool": "Tool",
+      "scope.all": "All roles",
       "page.size": "Rows per page",
       "page.prev": "Previous page",
       "page.next": "Next page",
@@ -553,7 +555,12 @@
     row.appendChild(actionCell);
 
     const scopesCell = el("td", "col-scopes");
-    scopesCell.appendChild(el("span", "badge badge-outline", String((rule.settings.scopes || []).length)));
+    const scopes = rule.settings.scopes || [];
+    const scopesBadge = el("span", "badge badge-outline", String(scopes.length));
+    scopesBadge.title = scopes.length
+      ? scopes.map(function (scope) { return t("scope." + scope); }).join("、")
+      : t("scope.all");
+    scopesCell.appendChild(scopesBadge);
     row.appendChild(scopesCell);
 
     const statusCell = el("td", "col-status");

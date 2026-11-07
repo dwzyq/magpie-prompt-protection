@@ -899,6 +899,10 @@ input[type="checkbox"] {
   color: var(--muted);
 }
 
+.col-scopes .badge-outline {
+  cursor: help;
+}
+
 .empty-row td {
   padding: 56px 16px;
   text-align: center;
