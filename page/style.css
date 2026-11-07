@@ -436,6 +436,10 @@ input[type="checkbox"] {
   white-space: nowrap;
 }
 
+.scope-code-single {
+  text-align: center;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
